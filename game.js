@@ -22,7 +22,7 @@ function update(player) {
 }
 
 //from character.js
-var player = new character(10, 50, startPos.x, startPos.y)
+var player = new character(10, 50, startPos.x, startPos.y);
 
 update(player)
 
