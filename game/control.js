@@ -13,9 +13,9 @@ function mainLoop() {
 requestAnimationFrame(mainLoop);
 
 function update(){
-	console.log("update() called");
+	//console.log("update() called");
 }
 
 function draw(){
-	console.log("draw() called");
+	//console.log("draw() called");
 }

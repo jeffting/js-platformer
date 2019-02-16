@@ -9,7 +9,7 @@ function dynamicallyLoadScript(url) {
 
 //must load in the order of dependence ie things on top are visible to files below
 dynamicallyLoadScript("globals.js")//this should be the highest
-
+dynamicallyLoadScript("level.js")
 
 dynamicallyLoadScript("model.js") //any class of objects that are in the model should be loaded above this file
 
