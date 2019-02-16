@@ -17,6 +17,8 @@ body {
 	align-items: center;
 
 }
+
 #game-canvas {
 	border: 2px solid red;
 	background:  #f1f1f1;
+}
