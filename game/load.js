@@ -13,6 +13,6 @@ dynamicallyLoadScript("level.js")
 
 dynamicallyLoadScript("model.js") //any class of objects that are in the model should be loaded above this file
 
-
+dynamicallyLoadScript("level_editor.js")
 //main game file containing game loop --this should probably be lowest
 dynamicallyLoadScript("control.js")
