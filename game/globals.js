@@ -2,9 +2,11 @@
 
 //state variables, ie MENU, GAME, DEAD, WIN
 
-const CANVAS_HEIGHT = 800;
-const CANVAS_WIDTH = 1400; //1920 : 1080 ratio roughly
+const CANVAS_HEIGHT = window.innerHeight - 100;
+const CANVAS_WIDTH = window.innerWidth - 200; //1920 : 1080 ratio roughly
 const BLOCK_SIZE = 40;
+const BULLET_DELAY = 150;
+const AMMO_DELAY = 2000;
 
 var canvas = document.getElementById("game-canvas");
 canvas.height = CANVAS_HEIGHT;

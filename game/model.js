@@ -11,9 +11,24 @@
 //each drawable will have an update() and draw() function (the platoforms and walls, for example, can have
 // update function too for future use but will probably not use them in initial, basic game)
 
+var gameArea = {
+    start : function() {
+        window.addEventListener('keydown', function (e) {
+            gameArea.keys = (gameArea.keys || []);
+            gameArea.keys[e.keyCode] = (e.type == "keydown");
+        })
+        window.addEventListener('keyup', function (e) {
+            gameArea.keys[e.keyCode] = (e.type == "keydown");
+        })
+    },
+    clear : function() {
+        CTX.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+    }
+}
+
 var map = [];
 var ai = [];
-var player;
+// var player;
 var ui = [];
 
 
