@@ -19,7 +19,10 @@ function startGame() {
 // Start things off
 requestAnimationFrame(mainLoop);
 
-function update(){
+function update(){   
+    for(var i = 0; i < map.length; i++){
+        map[i].draw();
+    }
     controlCharacter();
     player.update();
 
