@@ -14,13 +14,13 @@ function startGame() {
     player = new Player(30, 30, "red", 30, 120);
     hud = new HUD(CANVAS_WIDTH, 50, 0,0);
     gameArea.start();
-    bulletArray = [];
+    bulletArray = []; 
 }
  
 // Start things off
 requestAnimationFrame(mainLoop);
 
-function update(){   
+function update(){
     for(var i = 0; i < map.length; i++){
         map[i].draw();
     }
@@ -79,10 +79,12 @@ function moveright() {
 
 function shoot() {
     if (player.can_shoot && player.has_ammo) {
+        var laserSound = new sound("laser.mp3");
+        laserSound.play();
         bulletArray.push(new Bullet(10, 10, "blue", player.x, player.y, player.direction));
         player.can_shoot = false;
         setTimeout(setCanShoot, BULLET_DELAY);
-        setTimeout(deleteBullet, AMMO_DELAY);
+        setTimeout(deleteBullet, AMMO_DELAY);  
     }
 }
 
