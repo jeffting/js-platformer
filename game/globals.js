@@ -3,8 +3,8 @@
 //state variables, ie MENU, GAME, DEAD, WIN
 
 const CANVAS_HEIGHT = window.innerHeight - 100;
-const CANVAS_WIDTH = window.innerWidth - 200; //1920 : 1080 ratio roughly
-const BLOCK_SIZE = 40;
+const CANVAS_WIDTH = window.innerWidth - 392;
+const BLOCK_SIZE = CANVAS_HEIGHT/20;
 const BULLET_DELAY = 150;
 const AMMO_DELAY = 2000;
 
