@@ -12,6 +12,7 @@ function mainLoop() {
 
 function startGame() {
     player = new Player(30, 30, "red", 30, 120);
+    hud = new HUD(CANVAS_WIDTH, 50, 0,0);
     gameArea.start();
     bulletArray = [];
 }
@@ -37,7 +38,7 @@ function update(){
 
 function draw(){
     player.draw();
-
+    hud.draw();
 	// console.log("draw() called");
 }
 
