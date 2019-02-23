@@ -20,6 +20,9 @@ let ShootingActionMixIn = Base => class extends Base {
             this.bulletArray.push(bullet);
             entities.push(bullet);
 
+            var laserSound = new sound("laser.mp3");
+            laserSound.play();
+
             this.can_shoot = false;
 
             let that = this;
