@@ -1,5 +1,4 @@
-class Player {
-
+class Enemy {
     constructor(width, height, color, x, y) {
         this.width = width;
         this.height = height;
@@ -14,7 +13,6 @@ class Player {
         this.can_shoot = true;
         this.has_ammo = true;
         this.direction = "right";
-        this.bulletArray = [];
     }
 
     update() {
@@ -27,7 +25,7 @@ class Player {
     draw() {
         CTX.beginPath();
         CTX.lineWidth = "5";
-        CTX.strokeStyle = "red";  // Green path
+        CTX.strokeStyle = this.color;  // Green path
         CTX.moveTo(this.x, this.y);
         CTX.lineTo(this.x, this.y + 30);
         CTX.lineTo(this.x - 10, this.y + 45);
@@ -38,7 +36,7 @@ class Player {
         CTX.stroke();
         CTX.beginPath();
         CTX.arc(this.x, this.y - 10, 10, 0, 2 * Math.PI);
-        CTX.fillStyle = "red";
+        CTX.fillStyle = this.color;
         CTX.fill();
         CTX.stroke();  // Draw it
     }
@@ -48,57 +46,9 @@ class Player {
         if (this.y > rockbottom) {
             this.y = rockbottom;
             this.gravitySpeed = 0;
-            this.can_jump = true;
+            player.can_jump = true;
         }
     }
-
-    moveup() {
-        if (this.can_jump) {
-            this.speedY -= 5;
-            this.gravitySpeed = -10;
-            this.can_jump = false;
-        }
-    }
-
-    movedown() {
-        this.speedY += 5;
-    }
-
-    moveleft() {
-        this.speedX = this.speedX >= -8 ? this.speedX - 0.5 : -8;
-        this.direction = "left";
-    }
-
-    moveright() {
-        this.speedX = this.speedX <= 8 ? this.speedX + 0.5 : 8;
-        this.direction = "right";
-    }
-
-    shoot() {
-        if (this.can_shoot && this.has_ammo) {
-            this.bulletArray.push(new Bullet(10, 10, "blue", this.x, this.y, this.direction));
-            this.can_shoot = false;
-            var that = this;
-            setTimeout(function() { that.setCanShoot(); }, BULLET_DELAY);
-            setTimeout(function() { that.deleteBullet(); }, AMMO_DELAY);
-        }
-    }
-
-    setCanShoot() {
-        if (this.bulletArray.length < 3) {
-            this.has_ammo = true;
-            this.can_shoot = true;
-        } else if (this.bulletArray.length === 3) {
-            this.has_ammo = false;
-            this.can_shoot = true;
-        }
-    }
-
-    deleteBullet() {
-        this.bulletArray.shift();
-        this.has_ammo = true;
-    }
-
 }
 
 // function Player(width, height, color, x, y) {
@@ -121,7 +71,7 @@ class Player {
 //         /*** stick figure */
 //         CTX.beginPath();
 //         CTX.lineWidth = "5";
-//         CTX.strokeStyle = "red";  // Green path
+//         CTX.strokeStyle = this.color;  // Green path
 //         CTX.moveTo(this.x, this.y);
 //         CTX.lineTo(this.x, this.y + 30);
 //         CTX.lineTo(this.x - 10, this.y + 45);
@@ -132,7 +82,7 @@ class Player {
 //         CTX.stroke();
 //         CTX.beginPath();
 //         CTX.arc(this.x, this.y - 10, 10, 0, 2 * Math.PI);
-//         CTX.fillStyle = "red";
+//         CTX.fillStyle = this.color;
 //         CTX.fill();
 //         CTX.stroke();  // Draw it
 //     }
@@ -147,7 +97,7 @@ class Player {
 //         if (this.y > rockbottom) {
 //             this.y = rockbottom;
 //             this.gravitySpeed = 0;
-//             this.can_jump = true;
+//             player.can_jump = true;
 //         }
 //     }
 // }

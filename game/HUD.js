@@ -1,5 +1,5 @@
 class HUD {
-    constructor(width, height, xpos, ypos) {
+    constructor(player, width, height, xpos, ypos) {
         this.width = width;
         this.height = height;
         this.xpos = xpos;
@@ -17,7 +17,7 @@ class HUD {
         CTX.font = "40px Arial";
         CTX.fillStyle = "black";
         CTX.fillText("Ammo:", CANVAS_WIDTH - 250, 40);
-        let bullets = 3 - bulletArray.length;
+        let bullets = 3 - player.bulletArray.length;
 
         CTX.fillStyle = "red";
         if (bullets > 0) {
