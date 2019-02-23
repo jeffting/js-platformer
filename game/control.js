@@ -1,6 +1,5 @@
 //game loop with update and draw functions
 var player = null;
-var counter = 0;
 function mainLoop() {
     gameArea.clear();
     for(var i = 0; i < map.length; i++){
