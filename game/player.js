@@ -1,4 +1,4 @@
-class Player extends KeyboardControlMixIn(GravityUpdateMixIn(MovementUpdateMixIn(JumpingMixIn(ShootingActionMixIn(Entity))))) {
+class Player extends GravityMixIn(MovementMixIn(JumpingMixIn(ShootingActionMixIn(KeyboardControlMixIn(Entity))))) {
 
     constructor(width, height, color, x, y) {
         super();
