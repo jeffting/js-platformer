@@ -1,5 +1,6 @@
-class HUD {
+class HUD extends Entity {
     constructor(player, width, height, xpos, ypos) {
+        super();
         this.player = player;
         this.width = width;
         this.height = height;

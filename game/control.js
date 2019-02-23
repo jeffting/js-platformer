@@ -1,6 +1,6 @@
 //game loop with update and draw functions
 var player = null;
-
+var counter = 0;
 function mainLoop() {
     gameArea.clear();
     for(var i = 0; i < map.length; i++){
@@ -17,6 +17,7 @@ function startGame() {
     let player = new Player(30, 30, "red", 30, 120);
     entities.push(player);
     entities.push(new HUD(player, CANVAS_WIDTH, 50, 0,0));
+    entities.push(new Brawler("green", 500, 120));
     gameArea.start();
 }
 

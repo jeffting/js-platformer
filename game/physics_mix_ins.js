@@ -26,16 +26,16 @@ let GravityMixIn = Base => class extends Base {
 
     gravity_update(entity) {
         entity.gravitySpeed += entity.gravity;
-        entity.y += entity.gravitySpeed;
         let rockbottom = CANVAS_HEIGHT - (entity.height + 20);
         if (entity.y > rockbottom) {
             entity.gravitySpeed = 0;
         }
+        entity.y += entity.gravitySpeed;
     }
 }
 
 let MovementMixIn = Base => class extends Base {
-    movement_setup() {
+    movement_setup(acceleration) {
         if (!this.update_mix_ins) {
             this.update_mix_ins = [];
         }
@@ -43,12 +43,17 @@ let MovementMixIn = Base => class extends Base {
 
         this.speedX = 0;
         this.speedY = 0;
+        this.acceleration = acceleration;
         this.direction = "right";
     }
 
     movement_update(entity) {
         entity.x += entity.speedX;
         entity.y += entity.speedY;
+        let rockbottom = CANVAS_HEIGHT - (entity.height + 20);
+        if (entity.y > rockbottom) {
+            entity.speedY = 0;
+        }
     }
 
     movedown() {
@@ -56,12 +61,12 @@ let MovementMixIn = Base => class extends Base {
     }
 
     moveleft() {
-        this.speedX = this.speedX >= -8 ? this.speedX - 0.5 : -8;
+        this.speedX = this.speedX >= -8 ? this.speedX - this.acceleration : -8;
         this.direction = "left";
     }
 
     moveright() {
-        this.speedX = this.speedX <= 8 ? this.speedX + 0.5 : 8;
+        this.speedX = this.speedX <= 8 ? this.speedX + this.acceleration : 8;
         this.direction = "right";
     }
 }

@@ -9,7 +9,7 @@ class Player extends GravityMixIn(MovementMixIn(JumpingMixIn(ShootingActionMixIn
         this.y = y;
         this.keyboard_control_setup(KEY_UP, KEY_DOWN, KEY_LEFT, KEY_RIGHT, KEY_SPACE);
         this.gravity_setup();
-        this.movement_setup();
+        this.movement_setup(.5);
         this.jumping_setup();
         this.shooting_setup();
     }

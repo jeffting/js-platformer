@@ -24,3 +24,34 @@ let KeyboardControlMixIn = Base => class extends Base {
         if (gameArea.keys && gameArea.keys[entity.action_key]) { entity.action(); }
     }
 }
+
+let MeanderingAIMixIn = Base => class extends Base {
+    meandering_ai_setup(center, crest, valley) {
+        if (!this.update_mix_ins) {
+            this.update_mix_ins = [];
+        }
+        this.update_mix_ins.push(this.meandering_ai_update);
+
+        this.center = center;
+        this.crest = crest;
+        this.valley = valley;
+    }
+
+    meandering_ai_update(entity) {
+        if (entity.direction === "left") {
+            if (entity.x > (entity.center - entity.crest)) {
+                entity.moveleft();
+            } else {
+                entity.direction = "right";
+                entity.moveright();
+            }
+        } else if (entity.direction === "right") {
+            if (entity.x < (entity.center + entity.valley)) {
+                entity.moveright();
+            } else {
+                entity.direction = "left";
+                entity.moveleft();
+            }
+        }
+    }
+}
