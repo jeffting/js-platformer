@@ -1,4 +1,65 @@
-let gravityUpdateMixIn = Base => class extends Base {
+class Entity {
+    constructor() {
+        this.id = this.uuidv4();
+        this.update_mix_ins = [];
+    }
+
+    uuidv4() {
+      return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
+        (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+      )
+    }
+
+    update() {
+        for (let i = 0; i < this.update_mix_ins.length; i++) {
+            this.update_mix_ins[i](this);
+        }
+    }
+}
+
+let VectorMovementMixIn = Base => class extends Base {
+    vector_movement_setup(speed, direction) {
+        if (!this.update_mix_ins) {
+            this.update_mix_ins = [];
+        }
+        this.update_mix_ins.push(this.vector_movement_update);
+
+        this.speed = direction === "right" ? speed : 0 - speed;
+    }
+
+    vector_movement_update(entity) {
+        entity.x += entity.speed;
+    }
+}
+
+let KeyboardControlMixIn = Base => class extends Base {
+    keyboard_control_setup(up, down, left, right, action) {
+        if (!this.update_mix_ins) {
+            this.update_mix_ins = [];
+        }
+        this.update_mix_ins.push(this.keyboard_control_update);
+
+        this.up_key = up;
+        this.down_key = down;
+        this.left_key = left;
+        this.right_key = right;
+        this.action_key = action;
+    }
+
+    keyboard_control_update(entity) {
+        entity.speedY = 0;
+        if (gameArea.keys && gameArea.keys[entity.left_key]) { entity.moveleft(); }
+        if (gameArea.keys && gameArea.keys[entity.right_key]) { entity.moveright(); }
+        if (gameArea.keys && gameArea.keys[entity.up_key]) { entity.moveup(); }
+        if (gameArea.keys && gameArea.keys[entity.down_key]) { entity.movedown(); }
+        if (gameArea.keys && !gameArea.keys[entity.right_key] && !gameArea.keys[entity.left_key] && entity.speedX != 0 && entity.can_jump) {
+            entity.speedX = entity.speedX > 0 ? entity.speedX -0.5 : entity.speedX + 0.5;
+        }
+        if (gameArea.keys && gameArea.keys[entity.action_key]) { entity.action(); }
+    }
+}
+
+let GravityUpdateMixIn = Base => class extends Base {
     gravity_setup() {
         if (!this.update_mix_ins) {
             this.update_mix_ins = [];
@@ -19,7 +80,7 @@ let gravityUpdateMixIn = Base => class extends Base {
     }
 }
 
-let movementUpdateMixIn = Base => class extends Base {
+let MovementUpdateMixIn = Base => class extends Base {
     movement_setup() {
         if (!this.update_mix_ins) {
             this.update_mix_ins = [];
@@ -51,7 +112,7 @@ let movementUpdateMixIn = Base => class extends Base {
     }
 }
 
-let jumpingMixIn = Base => class extends Base {
+let JumpingMixIn = Base => class extends Base {
     jumping_setup() {
         if (!this.update_mix_ins) {
             this.update_mix_ins = [];
@@ -78,7 +139,7 @@ let jumpingMixIn = Base => class extends Base {
     }
 }
 
-let shootingMixIn = Base => class extends Base {
+let ShootingActionMixIn = Base => class extends Base {
     shooting_setup() {
         if (!this.update_mix_ins) {
             this.update_mix_ins = [];
@@ -94,11 +155,15 @@ let shootingMixIn = Base => class extends Base {
 
     }
 
-    shoot() {
+    action() {
         if (this.can_shoot && this.has_ammo) {
-            this.bulletArray.push(new Bullet(10, 10, "blue", this.x, this.y, this.direction));
+            let bullet = new Bullet(10, 10, "blue", this.x, this.y, this.direction);
+            this.bulletArray.push(bullet);
+            entities.push(bullet);
+
             this.can_shoot = false;
-            var that = this;
+
+            let that = this;
             setTimeout(function() { that.setCanShoot(); }, BULLET_DELAY);
             setTimeout(function() { that.deleteBullet(); }, AMMO_DELAY);
         }
@@ -115,19 +180,9 @@ let shootingMixIn = Base => class extends Base {
     }
 
     deleteBullet() {
-        this.bulletArray.shift();
+        let bullet = this.bulletArray.shift();
+        entities.pop(bullet);
         this.has_ammo = true;
     }
 }
 
-class Entity {
-    constructor() {
-        this.update_mix_ins = [];
-    }
-
-    update() {
-        for (let i = 0; i < this.update_mix_ins.length; i++) {
-            this.update_mix_ins[i](this);
-        }
-    }
-}

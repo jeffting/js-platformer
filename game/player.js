@@ -1,4 +1,4 @@
-class Player extends gravityUpdateMixIn(movementUpdateMixIn(jumpingMixIn(shootingMixIn(Entity)))) {
+class Player extends KeyboardControlMixIn(GravityUpdateMixIn(MovementUpdateMixIn(JumpingMixIn(ShootingActionMixIn(Entity))))) {
 
     constructor(width, height, color, x, y) {
         super();
@@ -7,6 +7,7 @@ class Player extends gravityUpdateMixIn(movementUpdateMixIn(jumpingMixIn(shootin
         this.color = color;
         this.x = x;
         this.y = y;
+        this.keyboard_control_setup(KEY_UP, KEY_DOWN, KEY_LEFT, KEY_RIGHT, KEY_SPACE);
         this.gravity_setup();
         this.movement_setup();
         this.jumping_setup();
