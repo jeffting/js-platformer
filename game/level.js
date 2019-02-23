@@ -40,8 +40,6 @@ class Level {
 	}
 
 	draw() {
-		console.log("draw in level")
-		console.log(this.map.length)
 		for (var i = 0; i < this.map.length; i++) {
 			this.map[i].draw();
 		}

@@ -1,0 +1,95 @@
+let VectorMovementMixIn = Base => class extends Base {
+    vector_movement_setup(speed, direction) {
+        if (!this.update_mix_ins) {
+            this.update_mix_ins = [];
+        }
+        this.update_mix_ins.push(this.vector_movement_update);
+
+        this.speed = direction === "right" ? speed : 0 - speed;
+    }
+
+    vector_movement_update(entity) {
+        entity.x += entity.speed;
+    }
+}
+
+let GravityMixIn = Base => class extends Base {
+    gravity_setup() {
+        if (!this.update_mix_ins) {
+            this.update_mix_ins = [];
+        }
+        this.update_mix_ins.push(this.gravity_update);
+
+        this.gravity = 0.3
+        this.gravitySpeed = 0;
+    }
+
+    gravity_update(entity) {
+        entity.gravitySpeed += entity.gravity;
+        entity.y += entity.gravitySpeed;
+        let rockbottom = CANVAS_HEIGHT - (entity.height + 20);
+        if (entity.y > rockbottom) {
+            entity.gravitySpeed = 0;
+        }
+    }
+}
+
+let MovementMixIn = Base => class extends Base {
+    movement_setup() {
+        if (!this.update_mix_ins) {
+            this.update_mix_ins = [];
+        }
+        this.update_mix_ins.push(this.movement_update);
+
+        this.speedX = 0;
+        this.speedY = 0;
+        this.direction = "right";
+    }
+
+    movement_update(entity) {
+        entity.x += entity.speedX;
+        entity.y += entity.speedY;
+    }
+
+    movedown() {
+        this.speedY += 5;
+    }
+
+    moveleft() {
+        this.speedX = this.speedX >= -8 ? this.speedX - 0.5 : -8;
+        this.direction = "left";
+    }
+
+    moveright() {
+        this.speedX = this.speedX <= 8 ? this.speedX + 0.5 : 8;
+        this.direction = "right";
+    }
+}
+
+let JumpingMixIn = Base => class extends Base {
+    jumping_setup() {
+        if (!this.update_mix_ins) {
+            this.update_mix_ins = [];
+        }
+        this.update_mix_ins.push(this.jumping_update);
+
+        this.can_jump = false;
+    }
+
+    jumping_update(entity) {
+        let rockbottom = CANVAS_HEIGHT - (entity.height + 20);
+        if (entity.y > rockbottom) {
+            entity.y = rockbottom;
+            entity.can_jump = true;
+        }
+    }
+
+    moveup() {
+        if (this.can_jump) {
+            this.speedY -= 5;
+            this.gravitySpeed = -10;
+            this.can_jump = false;
+        }
+    }
+}
+

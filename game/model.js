@@ -27,6 +27,22 @@ var gameArea = {
 }
 
 var map = [];
+var entities = {
+    list: {},
+    push: function(entity) {
+        this.list[entity.id] = entity;
+    },
+    pop: function(entity) {
+        delete this.list[entity.id];
+    },
+    each: function(func) {
+        for (var key in this.list) {
+            if (this.list.hasOwnProperty(key)) {
+                func(this.list[key]);
+            }
+        }
+    }
+};
 var ai = [];
 // var player;
 var ui = [];
