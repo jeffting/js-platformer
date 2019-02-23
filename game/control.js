@@ -22,19 +22,3 @@ function startGame() {
 
 // Start things off
 requestAnimationFrame(mainLoop);
-
-//function update(){
-//    if (!player) {
-//        return;
-//    }
-//    controlCharacter();
-//    player.update();
-//
-//    if (player.bulletArray.length) {
-//        player.bulletArray.forEach((b) => {
-//            b.draw();
-//            b.update();
-//        })
-//    }
-//    // console.log("update() called");
-//}
