@@ -19,6 +19,9 @@ function startGame() {
 requestAnimationFrame(mainLoop);
 
 function update(){
+    if (!player) {
+        return;
+    }
     for(var i = 0; i < map.length; i++){
         map[i].draw();
     }
@@ -35,12 +38,18 @@ function update(){
 }
 
 function draw(){
+    if (!player) {
+        return;
+    }
     player.draw();
     hud.draw();
     // console.log("draw() called");
 }
 
 function controlCharacter() {
+    if (!player) {
+        return;
+    }
     player.speedY = 0;
     if (gameArea.keys && gameArea.keys[37]) { player.moveleft(); }
     if (gameArea.keys && gameArea.keys[39]) { player.moveright(); }
