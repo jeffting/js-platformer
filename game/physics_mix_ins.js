@@ -91,6 +91,8 @@ let JumpingMixIn = Base => class extends Base {
 
     moveup() {
         if (this.can_jump) {
+            var jumpSound = new sound("jump.mp3");
+            jumpSound.play();
             this.speedY -= 5;
             this.gravitySpeed = -10;
             this.can_jump = false;
