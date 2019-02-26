@@ -15,19 +15,24 @@ class Player extends GravityMixIn(MovementMixIn(JumpingMixIn(ShootingActionMixIn
     }
 
     draw() {
+        let viewport = Viewport.getInstance();
+        let view_coords = viewport.mapToViewport(this.x, this.y);
+        let view_x = view_coords[0];
+        let view_y = view_coords[1];
+
         CTX.beginPath();
         CTX.lineWidth = "5";
         CTX.strokeStyle = this.color;  // Green path
-        CTX.moveTo(this.x, this.y);
-        CTX.lineTo(this.x, this.y + 30);
-        CTX.lineTo(this.x - 10, this.y + 45);
-        CTX.moveTo(this.x,this.y + 30);
-        CTX.lineTo(this.x + 10, this.y + 45);
-        CTX.moveTo(this.x - 15, this.y + 10);
-        CTX.lineTo(this.x + 15, this.y + 10);
+        CTX.moveTo(view_x, view_y);
+        CTX.lineTo(view_x, view_y + 30);
+        CTX.lineTo(view_x - 10, view_y + 45);
+        CTX.moveTo(view_x,view_y + 30);
+        CTX.lineTo(view_x + 10, view_y + 45);
+        CTX.moveTo(view_x - 15, view_y + 10);
+        CTX.lineTo(view_x + 15, view_y + 10);
         CTX.stroke();
         CTX.beginPath();
-        CTX.arc(this.x, this.y - 10, 10, 0, 2 * Math.PI);
+        CTX.arc(view_x, view_y - 10, 10, 0, 2 * Math.PI);
         CTX.fillStyle = this.color;
         CTX.fill();
         CTX.stroke();  // Draw it

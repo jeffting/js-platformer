@@ -4,7 +4,7 @@
 
 const CANVAS_HEIGHT = window.innerHeight - 100;
 const CANVAS_WIDTH = window.innerWidth - 392;
-const BLOCK_SIZE = CANVAS_HEIGHT/20;
+const BLOCK_SIZE = 30;
 const BULLET_DELAY = 150;
 const AMMO_DELAY = 2000;
 
