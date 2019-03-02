@@ -8,8 +8,13 @@ class Block {
 	}
 
 	draw() {
+		let viewport = Viewport.getInstance();
+		let view_coords = viewport.mapToViewport(this.x, this.y);
+		let view_x = view_coords[0];
+		let view_y = view_coords[1];
+
 		CTX.fillStyle = BlockTypes.props[this.type].color;
-		CTX.fillRect(this.x, this.y, this.width, this.width)
+		CTX.fillRect(view_x, view_y + (CANVAS_HEIGHT - BLOCK_SIZE*20), this.width, this.width)
 	}
 }
 

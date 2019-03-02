@@ -11,10 +11,15 @@ class Bullet extends VectorMovementMixIn(Entity) {
     }
 
     draw() {
+        let viewport = Viewport.getInstance();
+        let view_coords = viewport.mapToViewport(this.x, this.y);
+        let view_x = view_coords[0];
+        let view_y = view_coords[1];
+
         CTX.lineWidth = "3";
         CTX.beginPath();
         CTX.strokeStyle = this.color;
-        CTX.arc(this.x, this.y, 5, 0, 2 * Math.PI);
+        CTX.arc(view_x, view_y, 5, 0, 2 * Math.PI);
         CTX.fillStyle = this.color;
         CTX.fill();
         CTX.stroke();
