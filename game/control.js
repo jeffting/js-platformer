@@ -10,7 +10,7 @@ function mainLoop() {
     }
     entities.each(function(entity) {
         entity.update();
-        if (entity.id == playerID) {
+        if (entity.id === playerID) {
             viewport.update(entity.x, entity.y);
         }
         entity.draw();
@@ -19,8 +19,8 @@ function mainLoop() {
 }
 
 function startGame() {
-    let playerStartX = 30;
-    let playerStartY = 120
+    let playerStartX = 90;
+    let playerStartY = 120;
     let player = new Player(30, 30, "red", playerStartX, playerStartY);
     viewport.update(playerStartX, playerStartY);
     playerID = player.id;

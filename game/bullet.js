@@ -1,4 +1,6 @@
-class Bullet extends VectorMovementMixIn(Entity) {
+class Bullet extends CollidableMixIn(
+    VectorMovementMixIn(Entity)) {
+
     constructor (width, height, color, x, y, direction) {
         super();
         this.width = width;
@@ -8,6 +10,7 @@ class Bullet extends VectorMovementMixIn(Entity) {
         this.y = y + 10;
 
         this.vector_movement_setup(10, direction);
+        this.collidable_setup();
     }
 
     draw() {

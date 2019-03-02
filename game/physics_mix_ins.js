@@ -106,20 +106,30 @@ let CollidableMixIn = Base => class extends Base {
             this.update_mix_ins = [];
         }
         this.update_mix_ins.push(this.collidable_update);
+
+        this.invulnerable = false;
     }
 
     collidable_update(entity) {
 
+        //Check collisions between entity and other entities
         entities.each(function(otherEntity) {
             if (entity.id === otherEntity.id) {
-              //Do Nothing
+                //Do Nothing, don't check against self
+            } else if (entity.id === playerID && otherEntity instanceof Bullet) {
+                //Do Nothing, don't care about player and bullet overlap
+            } else if (entity instanceof Bullet && otherEntity.id === playerID) {
+                //Do Nothing, don't care about player and bullet overlap
             } else {
-                entity.detectCollision(otherEntity.x, otherEntity.y, otherEntity.width, otherEntity.height);
+                entity.detectCollisionBetweenEntities(otherEntity.x, otherEntity.y,
+                    otherEntity.width, otherEntity.height);
             }
         });
+
+        //Check collisions between entity and environment
     }
 
-    detectCollision(otherX, otherY, otherWidth, otherHeight) {
+    detectCollisionBetweenEntities(otherX, otherY, otherWidth, otherHeight) {
         //Test for x-axis overlap
         if(this.x <= (otherX + otherWidth) &&
         otherX <= this.x + this.width) {
@@ -128,17 +138,30 @@ let CollidableMixIn = Base => class extends Base {
             if(this.y <= (otherY + otherHeight) &&
             otherY <= this.y + this.height) {
                 //Collision!
-
-                console.log("We have a collision!");
+                if(this.id === playerID) {
+                    if(!this.invulnerable) {
+                        this.damagePlayer();
+                    }
+                }
 
             } else {
-                return
+                return;
             }
 
         } else {
-            return
+            return;
         }
     }
 
-}
+    damagePlayer() {
+        console.log("Player hit!");
+        this.invulnerable = true;
+        let that = this;
+        setTimeout(function() {
+            that.invulnerable = false;
+            console.log("Should be vulnerable again...");
+        }, 2000);
+    }
+
+};
 
