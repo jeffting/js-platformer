@@ -100,3 +100,45 @@ let JumpingMixIn = Base => class extends Base {
     }
 }
 
+let CollidableMixIn = Base => class extends Base {
+    collidable_setup() {
+        if (!this.update_mix_ins) {
+            this.update_mix_ins = [];
+        }
+        this.update_mix_ins.push(this.collidable_update);
+    }
+
+    collidable_update(entity) {
+
+        entities.each(function(otherEntity) {
+            if (entity.id === otherEntity.id) {
+              //Do Nothing
+            } else {
+                entity.detectCollision(otherEntity.x, otherEntity.y, otherEntity.width, otherEntity.height);
+            }
+        });
+    }
+
+    detectCollision(otherX, otherY, otherWidth, otherHeight) {
+        //Test for x-axis overlap
+        if(this.x <= (otherX + otherWidth) &&
+        otherX <= this.x + this.width) {
+
+            //Test for y-axis overlap
+            if(this.y <= (otherY + otherHeight) &&
+            otherY <= this.y + this.height) {
+                //Collision!
+
+                console.log("We have a collision!");
+
+            } else {
+                return
+            }
+
+        } else {
+            return
+        }
+    }
+
+}
+

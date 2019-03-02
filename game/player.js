@@ -1,4 +1,9 @@
-class Player extends GravityMixIn(MovementMixIn(JumpingMixIn(ShootingActionMixIn(KeyboardControlMixIn(Entity))))) {
+class Player extends CollidableMixIn(
+    GravityMixIn(
+        MovementMixIn(
+            JumpingMixIn(
+                ShootingActionMixIn(
+                    KeyboardControlMixIn(Entity)))))) {
 
     constructor(width, height, color, x, y) {
         super();
@@ -12,6 +17,7 @@ class Player extends GravityMixIn(MovementMixIn(JumpingMixIn(ShootingActionMixIn
         this.movement_setup(.5);
         this.jumping_setup();
         this.shooting_setup();
+        this.collidable_setup();
     }
 
     draw() {

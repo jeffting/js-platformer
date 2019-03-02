@@ -1,4 +1,8 @@
-class Brawler extends GravityMixIn(MovementMixIn(MeanderingAIMixIn(Entity))) {
+class Brawler extends CollidableMixIn(
+    GravityMixIn(
+        MovementMixIn(
+            MeanderingAIMixIn(Entity)))) {
+
     constructor(color, x, y) {
         super();
         this.width = 60;
@@ -9,6 +13,7 @@ class Brawler extends GravityMixIn(MovementMixIn(MeanderingAIMixIn(Entity))) {
         this.gravity_setup();
         this.movement_setup(.15);
         this.meandering_ai_setup(this.x, 100, 100);
+        this.collidable_setup();
     }
 
     draw() {

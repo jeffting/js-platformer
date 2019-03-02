@@ -23,7 +23,7 @@ class Level {
 	//map is 2D array representing map
 	constructor(map) {
 		this.mapArray = map;
-		this.map = [];
+		// this.map = [];
 		this.convertMap();
 		
 	}
@@ -37,7 +37,7 @@ class Level {
 					var type = row[j];
 					var block = new Block(j * BLOCK_SIZE, i * BLOCK_SIZE, BLOCK_SIZE, type)
 
-					this.map.push(block)
+					map.push(block)
 				}
 			}
 
@@ -46,7 +46,7 @@ class Level {
 
 	draw() {
 		for (var i = 0; i < this.map.length; i++) {
-			this.map[i].draw();
+			map[i].draw();
 		}
 	}
 
