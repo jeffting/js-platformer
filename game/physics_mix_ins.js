@@ -113,23 +113,55 @@ let CollidableMixIn = Base => class extends Base {
     collidable_update(entity) {
 
         //Check collisions between entity and other entities
+        //We want to do different things depending on what is colliding against what
         entities.each(function(otherEntity) {
-            if (entity.id === otherEntity.id) {
-                //Do Nothing, don't check against self
-            } else if (entity.id === playerID && otherEntity instanceof Bullet) {
-                //Do Nothing, don't care about player and bullet overlap
-            } else if (entity instanceof Bullet && otherEntity.id === playerID) {
-                //Do Nothing, don't care about player and bullet overlap
-            } else {
-                entity.detectCollisionBetweenEntities(otherEntity.x, otherEntity.y,
-                    otherEntity.width, otherEntity.height);
+            if (entity.id === otherEntity.id) { //checking against self
+                //Do Nothing
             }
+
+            if (entity instanceof Player) { //checking player
+                if (otherEntity instanceof Bullet) { //against bullet
+                    //Do Nothing
+                }
+
+                //Check against key
+
+                //Check against gate
+
+                //Check against all enemy types
+                if (otherEntity instanceof Brawler) { //against brawler
+                    if(entity.detectCollision(otherEntity.x, otherEntity.y, otherEntity.width, otherEntity.height)) {
+                        //Player ran into Brawler!
+                        if(!entity.invulnerable) {
+                            entity.damagePlayer();
+                        }
+                    }
+                }
+            }
+
+            if (entity instanceof Bullet) { //checking bullet
+                if (otherEntity instanceof Player) {
+                    //Do Nothing
+                }
+
+                //Check against all enemy types
+                if (otherEntity instanceof Brawler) {
+                    if(entity.detectCollision(otherEntity.x, otherEntity.y, otherEntity.width, otherEntity.height)) {
+                        //Bullet hit Brawler!
+
+                    }
+                }
+            }
+
         });
 
         //Check collisions between entity and environment
+        for(var i = 0; i < map.length; i++) {
+
+        }
     }
 
-    detectCollisionBetweenEntities(otherX, otherY, otherWidth, otherHeight) {
+    detectCollision(otherX, otherY, otherWidth, otherHeight) {
         //Test for x-axis overlap
         if(this.x <= (otherX + otherWidth) &&
         otherX <= this.x + this.width) {
@@ -138,28 +170,21 @@ let CollidableMixIn = Base => class extends Base {
             if(this.y <= (otherY + otherHeight) &&
             otherY <= this.y + this.height) {
                 //Collision!
-                if(this.id === playerID) {
-                    if(!this.invulnerable) {
-                        this.damagePlayer();
-                    }
-                }
-
+                return true;
             } else {
-                return;
+                return false;
             }
 
         } else {
-            return;
+            return false;
         }
     }
 
     damagePlayer() {
-        console.log("Player hit!");
         this.invulnerable = true;
         let that = this;
         setTimeout(function() {
             that.invulnerable = false;
-            console.log("Should be vulnerable again...");
         }, 2000);
     }
 
