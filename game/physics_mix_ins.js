@@ -132,6 +132,10 @@ let CollidableMixIn = Base => class extends Base {
                 if (otherEntity instanceof Brawler) { //against brawler
                     if(entity.detectCollision(otherEntity.x, otherEntity.y, otherEntity.width, otherEntity.height)) {
                         //Player ran into Brawler!
+                        console.log("Player collided with Brawler");
+
+                        // Give player a chance once hit by brawler.
+                        // Without invulnerability many collisions detected before player has a chance to get away
                         if(!entity.invulnerable) {
                             entity.damagePlayer();
                         }
@@ -148,7 +152,7 @@ let CollidableMixIn = Base => class extends Base {
                 if (otherEntity instanceof Brawler) {
                     if(entity.detectCollision(otherEntity.x, otherEntity.y, otherEntity.width, otherEntity.height)) {
                         //Bullet hit Brawler!
-
+                        console.log("Bullet collided with Brawler");
                     }
                 }
             }
@@ -157,7 +161,19 @@ let CollidableMixIn = Base => class extends Base {
 
         //Check collisions between entity and environment
         for(var i = 0; i < map.length; i++) {
-
+            var block = map[i];
+            if (entity.detectCollision(block.x, block.y, block.width, block.width)) {
+                //Collision with a block
+                if (entity instanceof Player) {
+                    console.log("Player collided with block");
+                }
+                if (entity instanceof Brawler) {
+                    console.log("Brawler collided with block");
+                }
+                if (entity instanceof Bullet) {
+                    console.log("Bullet collided with block");
+                }
+            }
         }
     }
 

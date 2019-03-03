@@ -14,7 +14,7 @@ class Block {
 		let view_y = view_coords[1];
 
 		CTX.fillStyle = BlockTypes.props[this.type].color;
-		CTX.fillRect(view_x, view_y + (CANVAS_HEIGHT - BLOCK_SIZE*20), this.width, this.width)
+		CTX.fillRect(view_x, view_y, this.width, this.width)
 	}
 }
 
