@@ -16,7 +16,8 @@ let ShootingActionMixIn = Base => class extends Base {
 
     action() {
         if (this.can_shoot && this.has_ammo) {
-            let bullet = new Bullet(10, 10, "blue", this.x, this.y, this.direction);
+            let bullet = new Bullet(10, 10, "blue", this.x, (this.y + this.height/2)-10,
+                this.direction);
             this.bulletArray.push(bullet);
             entities.push(bullet);
 

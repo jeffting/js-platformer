@@ -7,6 +7,7 @@ const CANVAS_WIDTH = window.innerWidth - 392;
 const BLOCK_SIZE = 50;
 const BULLET_DELAY = 150;
 const AMMO_DELAY = 2000;
+const MAX_GRAVITY = 12;
 
 const KEY_UP = 38;
 const KEY_DOWN = 40;

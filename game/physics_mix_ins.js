@@ -26,9 +26,8 @@ let GravityMixIn = Base => class extends Base {
 
     gravity_update(entity) {
         entity.gravitySpeed += entity.gravity;
-        let rockbottom = CANVAS_HEIGHT - (entity.height + 20);
-        if (entity.y > rockbottom) {
-            entity.gravitySpeed = 0;
+        if (entity.gravitySpeed > MAX_GRAVITY) {
+            entity.gravitySpeed = MAX_GRAVITY;
         }
         entity.y += entity.gravitySpeed;
     }
@@ -50,14 +49,20 @@ let MovementMixIn = Base => class extends Base {
     movement_update(entity) {
         entity.x += entity.speedX;
         entity.y += entity.speedY;
-        let rockbottom = CANVAS_HEIGHT - (entity.height + 20);
-        if (entity.y > rockbottom) {
-            entity.speedY = 0;
+        if (entity.x < BLOCK_SIZE) { // Prevent moving left through walls
+            entity.x = BLOCK_SIZE;
+        }
+        if (entity.x > (MAP_1[0].length * BLOCK_SIZE)-(BLOCK_SIZE+30)) { // Prevent moving right through walls
+            entity.x = (MAP_1[0].length * BLOCK_SIZE)-(BLOCK_SIZE+30);
+        }
+        if (entity.y > (MAP_1.length * BLOCK_SIZE) - (BLOCK_SIZE+60)) { // Prevent moving down through floors
+            entity.y = (MAP_1.length * BLOCK_SIZE) - (BLOCK_SIZE+60);
         }
     }
 
     movedown() {
         this.speedY += 5;
+
     }
 
     moveleft() {
@@ -82,11 +87,7 @@ let JumpingMixIn = Base => class extends Base {
     }
 
     jumping_update(entity) {
-        let rockbottom = CANVAS_HEIGHT - (entity.height + 20);
-        if (entity.y > rockbottom) {
-            entity.y = rockbottom;
-            entity.can_jump = true;
-        }
+
     }
 
     moveup() {
@@ -172,16 +173,49 @@ let CollidableMixIn = Base => class extends Base {
         //Check collisions between entity and environment
         for(var i = 0; i < map.length; i++) {
             var block = map[i];
-            if (entity.detectCollision(block.x, block.y, block.width, block.width)) {
+            if (entity.detectCollision(block.x, block.y, BLOCK_SIZE, BLOCK_SIZE)) {
                 //Collision with a block
-                if (entity instanceof Player) {
-                    console.log("Player collided with block");
+
+                //Some of these tests are unique to player, others (falling) are not, but here temporarily
+                if (entity instanceof Player) { // Player collided with block
+                    if (entity.gravitySpeed < 0) {
+                        console.log("  while jumping");
+                        entity.y += (entity.gravitySpeed + 20);
+                        entity.gravitySpeed = 0;
+                        entity.speedY = 0;
+                    }
+                    if (entity.gravitySpeed > 0) {
+                        console.log("  while falling");
+                        entity.y -= (entity.gravitySpeed);
+                        entity.gravitySpeed = 0;
+                        entity.speedY = 0;
+                        if (entity.id === playerID) {
+                            entity.can_jump = true;
+                        }
+                    }
                 }
-                if (entity instanceof Brawler) {
+                //Not unique to Brawler, but here temporarily
+                if (entity instanceof Brawler) { //Brawler collided with block
                     console.log("Brawler collided with block");
+                    if (entity.gravitySpeed > 0) {
+                        console.log("  while falling");
+                        entity.y -= (entity.gravitySpeed);
+                        entity.gravitySpeed = 0;
+                        entity.speedY = 0;
+                        if (entity.id === playerID) {
+                            entity.can_jump = true;
+                        }
+                    }
                 }
-                if (entity instanceof Bullet) {
+                //This is unique to bullet, and will probably have to stay. Maybe change to delete bullet on collision
+                if (entity instanceof Bullet) { //Bullet collided with block
                     console.log("Bullet collided with block");
+                    if (entity.speed > 0) {
+                        entity.x -= (entity.speed);
+                    }
+                    if (entity.speed < 0) {
+                        entity.x -= (entity.speed);
+                    }
                 }
             }
         }
