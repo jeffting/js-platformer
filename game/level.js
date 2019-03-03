@@ -33,12 +33,21 @@ class Level {
 			var row = this.mapArray[i];
 
 			for (var j = 0; j < row.length; j++) {
-				if(row[j] !== 0) {
+				if(row[j] == 1) {
 					var type = row[j];
-					var block = new Block(j * BLOCK_SIZE, i * BLOCK_SIZE, BLOCK_SIZE, type)
+					var block = new Block(j * BLOCK_SIZE, i * BLOCK_SIZE, BLOCK_SIZE, type);
 
 					map.push(block)
-				}
+				} else if (row[j] == 2) {
+				    playerStartX = j * BLOCK_SIZE;
+                    playerStartY = i * BLOCK_SIZE;
+                } else if (row[j] == 3) {
+                    keyStartX = j * BLOCK_SIZE;
+                    keyStartY = i * BLOCK_SIZE;
+                } else if (row[j] == 4) {
+                    gateX = j * BLOCK_SIZE;
+                    gateY = i * BLOCK_SIZE;
+                }
 			}
 
 		}

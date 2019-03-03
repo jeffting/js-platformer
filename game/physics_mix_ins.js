@@ -124,9 +124,19 @@ let CollidableMixIn = Base => class extends Base {
                     //Do Nothing
                 }
 
-                //Check against key
+                if (otherEntity instanceof Key) { //against key
+                    if(entity.detectCollision(otherEntity.x, otherEntity.y, otherEntity.width, otherEntity.height)) {
+                        //Player ran into Key!
+                        console.log("Player collided with Key");
+                    }
+                }
 
-                //Check against gate
+                if (otherEntity instanceof Gate) { //against gate
+                    if(entity.detectCollision(otherEntity.x, otherEntity.y, otherEntity.width, otherEntity.height)) {
+                        //Player ran into Gate!
+                        console.log("Player collided with Gate");
+                    }
+                }
 
                 //Check against all enemy types
                 if (otherEntity instanceof Brawler) { //against brawler

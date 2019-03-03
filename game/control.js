@@ -19,11 +19,11 @@ function mainLoop() {
 }
 
 function startGame() {
-    let playerStartX = 90;
-    let playerStartY = 120;
     let player = new Player(30, 30, "red", playerStartX, playerStartY);
     viewport.update(playerStartX, playerStartY);
     playerID = player.id;
+    entities.push(new Gate(gateX, gateY));
+    entities.push(new Key(keyStartX, keyStartY));
     entities.push(player);
     entities.push(new HUD(player, CANVAS_WIDTH, 50, 0,0));
     entities.push(new Brawler("green", 500, 120));
