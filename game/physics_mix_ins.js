@@ -179,13 +179,11 @@ let CollidableMixIn = Base => class extends Base {
                 //Some of these tests are unique to player, others (falling) are not, but here temporarily
                 if (entity instanceof Player) { // Player collided with block
                     if (entity.gravitySpeed < 0) {
-                        console.log("  while jumping");
                         entity.y += (entity.gravitySpeed + 20);
                         entity.gravitySpeed = 0;
                         entity.speedY = 0;
                     }
                     if (entity.gravitySpeed > 0) {
-                        console.log("  while falling");
                         entity.y -= (entity.gravitySpeed);
                         entity.gravitySpeed = 0;
                         entity.speedY = 0;
@@ -196,9 +194,7 @@ let CollidableMixIn = Base => class extends Base {
                 }
                 //Not unique to Brawler, but here temporarily
                 if (entity instanceof Brawler) { //Brawler collided with block
-                    console.log("Brawler collided with block");
                     if (entity.gravitySpeed > 0) {
-                        console.log("  while falling");
                         entity.y -= (entity.gravitySpeed);
                         entity.gravitySpeed = 0;
                         entity.speedY = 0;
