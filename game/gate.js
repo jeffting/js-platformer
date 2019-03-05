@@ -1,23 +1,15 @@
-class Brawler extends CollidableMixIn(
-    GravityMixIn(
-        MovementMixIn(
-            MeanderingAIMixIn(Entity)))) {
+class Gate extends Entity {
 
-    constructor(color, x, y) {
+    constructor (x, y,) {
         super();
         this.width = 60;
         this.height = 60;
-        this.color = color;
         this.x = x;
         this.y = y;
-        this.gravity_setup();
-        this.movement_setup(.15);
-        this.meandering_ai_setup(this.x, 100, 100);
-        this.collidable_setup();
     }
 
     draw() {
-        let image = images.get("brawler");
+        let image = images.get("gate");
         let viewport = Viewport.getInstance();
         let view_coords = viewport.mapToViewport(this.x, this.y);
         let view_x = view_coords[0];

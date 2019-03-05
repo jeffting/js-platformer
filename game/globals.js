@@ -4,9 +4,10 @@
 
 const CANVAS_HEIGHT = window.innerHeight - 100;
 const CANVAS_WIDTH = window.innerWidth - 392;
-const BLOCK_SIZE = 30;
+const BLOCK_SIZE = 50;
 const BULLET_DELAY = 150;
 const AMMO_DELAY = 2000;
+const MAX_GRAVITY = 12;
 
 const KEY_UP = 38;
 const KEY_DOWN = 40;
@@ -47,6 +48,8 @@ var images = {
     }
 };
 images.load("brawler", "angry_face.png");
+images.load("key", "key.png");
+images.load("gate", "gate.png");
 
 
 

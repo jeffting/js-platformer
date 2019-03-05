@@ -14,7 +14,7 @@ class Block {
 		let view_y = view_coords[1];
 
 		CTX.fillStyle = BlockTypes.props[this.type].color;
-		CTX.fillRect(view_x, view_y + (CANVAS_HEIGHT - BLOCK_SIZE*20), this.width, this.width)
+		CTX.fillRect(view_x, view_y, this.width, this.width)
 	}
 }
 
@@ -23,7 +23,7 @@ class Level {
 	//map is 2D array representing map
 	constructor(map) {
 		this.mapArray = map;
-		this.map = [];
+		// this.map = [];
 		this.convertMap();
 		
 	}
@@ -33,12 +33,21 @@ class Level {
 			var row = this.mapArray[i];
 
 			for (var j = 0; j < row.length; j++) {
-				if(row[j] !== 0) {
+				if(row[j] == 1) {
 					var type = row[j];
-					var block = new Block(j * BLOCK_SIZE, i * BLOCK_SIZE, BLOCK_SIZE, type)
+					var block = new Block(j * BLOCK_SIZE, i * BLOCK_SIZE, BLOCK_SIZE, type);
 
-					this.map.push(block)
-				}
+					map.push(block)
+				} else if (row[j] == 2) {
+				    playerStartX = j * BLOCK_SIZE;
+                    playerStartY = i * BLOCK_SIZE;
+                } else if (row[j] == 3) {
+                    keyStartX = j * BLOCK_SIZE;
+                    keyStartY = i * BLOCK_SIZE;
+                } else if (row[j] == 4) {
+                    gateX = j * BLOCK_SIZE;
+                    gateY = i * BLOCK_SIZE;
+                }
 			}
 
 		}
@@ -46,7 +55,7 @@ class Level {
 
 	draw() {
 		for (var i = 0; i < this.map.length; i++) {
-			this.map[i].draw();
+			map[i].draw();
 		}
 	}
 
