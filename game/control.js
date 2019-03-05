@@ -19,7 +19,7 @@ function mainLoop() {
 }
 
 function startGame() {
-    let player = new Player(30, 60, "red", playerStartX, playerStartY);
+    player = new Player(30, 60, "red", playerStartX, playerStartY);
     viewport.update(playerStartX, playerStartY);
     playerID = player.id;
     entities.push(new Gate(gateX, gateY-10));
