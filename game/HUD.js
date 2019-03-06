@@ -19,7 +19,7 @@ class HUD extends Entity {
         CTX.font = "40px Arial";
         CTX.fillStyle = "black";
         CTX.fillText("Ammo:", CANVAS_WIDTH - 250, 40);
-        let bullets = 3 - this.player.bulletArray.length;
+        let bullets = this.player.ammoArray.length;
 
         CTX.fillStyle = "red";
         if (bullets > 0) {

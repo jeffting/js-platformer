@@ -6,7 +6,6 @@ let ShootingActionMixIn = Base => class extends Base {
         this.update_mix_ins.push(this.shooting_update);
 
         this.can_shoot = true;
-        this.has_ammo = true;
         this.bulletArray = [];
         this.ammoArray = [1,1,1];
     }
@@ -17,7 +16,7 @@ let ShootingActionMixIn = Base => class extends Base {
 
     action() {
         if (this.can_shoot && this.ammoArray.length) {
-            let bullet = new Bullet(10, 10, "blue", this.x, (this.y + this.height/2)-10,
+            let bullet = new Bullet(10, 10, "blue", this.x, (this.y + this.height/4),
                 this.direction);
             this.bulletArray.push(bullet);
             this.ammoArray.pop();
@@ -43,9 +42,10 @@ let ShootingActionMixIn = Base => class extends Base {
         let bullet = this.bulletArray.find((b) => {
             return b.id === id;
         });
+
         if (bullet) {
             this.bulletArray = this.bulletArray.filter(() => {
-                return bullet.id !== id;
+                return bullet.id === id;
             })
             entities.pop(bullet);
         }
