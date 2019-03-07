@@ -148,6 +148,8 @@ let CollidableMixIn = Base => class extends Base {
                         // Give player a chance once hit by brawler.
                         // Without invulnerability many collisions detected before player has a chance to get away
                         if(!entity.invulnerable) {
+                            var playerHitSound = new sound("playerGruntingSound.mp3");
+                            playerHitSound.play();
                             entity.damagePlayer();
                         }
                     }
@@ -163,7 +165,9 @@ let CollidableMixIn = Base => class extends Base {
                 if (otherEntity instanceof Brawler) {
                     if(entity.detectCollision(otherEntity.x, otherEntity.y, otherEntity.width, otherEntity.height)) {
                         //Bullet hit Brawler!
-                        // console.log("Bullet collided with Brawler");
+                        var robotSound = new sound("aiBubbleSound.mp3");
+                        robotSound.play();
+                        console.log("Bullet collided with Brawler");
                     }
                 }
             }

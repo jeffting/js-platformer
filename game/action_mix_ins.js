@@ -51,9 +51,9 @@ let ShootingActionMixIn = Base => class extends Base {
         }
     }
 
+
     addAmmo() {
         this.ammoArray.push(1);
-
     }
 }
 
