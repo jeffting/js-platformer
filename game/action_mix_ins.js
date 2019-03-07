@@ -45,6 +45,8 @@ let ShootingActionMixIn = Base => class extends Base {
     deleteBullet() {
         let bullet = this.bulletArray.shift();
         entities.pop(bullet);
+        var reloadSound = new sound("reloading.mp3");
+        reloadSound.play();
         this.has_ammo = true;
     }
 }
