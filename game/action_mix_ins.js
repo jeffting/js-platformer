@@ -6,8 +6,8 @@ let ShootingActionMixIn = Base => class extends Base {
         this.update_mix_ins.push(this.shooting_update);
 
         this.can_shoot = true;
-        this.has_ammo = true;
         this.bulletArray = [];
+        this.ammoArray = [1,1,1];
     }
 
     shooting_update(entity) {
@@ -15,10 +15,11 @@ let ShootingActionMixIn = Base => class extends Base {
     }
 
     action() {
-        if (this.can_shoot && this.has_ammo) {
-            let bullet = new Bullet(10, 10, "blue", this.x, (this.y + this.height/2)-10,
+        if (this.can_shoot && this.ammoArray.length) {
+            let bullet = new Bullet(10, 10, "blue", this.x, (this.y + this.height/4),
                 this.direction);
             this.bulletArray.push(bullet);
+            this.ammoArray.pop();
             entities.push(bullet);
 
             var laserSound = new sound("laser.mp3");
@@ -28,26 +29,31 @@ let ShootingActionMixIn = Base => class extends Base {
 
             let that = this;
             setTimeout(function() { that.setCanShoot(); }, BULLET_DELAY);
-            setTimeout(function() { that.deleteBullet(); }, AMMO_DELAY);
+            setTimeout(function() { that.deleteBullet(bullet.id); }, AMMO_DELAY);
+            setTimeout(function() { that.addAmmo(); }, AMMO_DELAY );
         }
     }
 
     setCanShoot() {
-        if (this.bulletArray.length < 3) {
-            this.has_ammo = true;
-            this.can_shoot = true;
-        } else if (this.bulletArray.length === 3) {
-            this.has_ammo = false;
-            this.can_shoot = true;
+        this.can_shoot = true;
+    }
+
+    deleteBullet(id) {
+        let bullet = this.bulletArray.find((b) => {
+            return b.id === id;
+        });
+
+        if (bullet) {
+            this.bulletArray = this.bulletArray.filter(() => {
+                return bullet.id === id;
+            })
+            entities.pop(bullet);
         }
     }
 
-    deleteBullet() {
-        let bullet = this.bulletArray.shift();
-        entities.pop(bullet);
-        var reloadSound = new sound("reloading.mp3");
-        reloadSound.play();
-        this.has_ammo = true;
+
+    addAmmo() {
+        this.ammoArray.push(1);
     }
 }
 

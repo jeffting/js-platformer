@@ -52,7 +52,7 @@ var entities = {
     }
 };
 var ai = [];
-// var player;
+var player;
 var ui = [];
 
 

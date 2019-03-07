@@ -143,7 +143,7 @@ let CollidableMixIn = Base => class extends Base {
                 if (otherEntity instanceof Brawler) { //against brawler
                     if(entity.detectCollision(otherEntity.x, otherEntity.y, otherEntity.width, otherEntity.height)) {
                         //Player ran into Brawler!
-                        console.log("Player collided with Brawler");
+                        // console.log("Player collided with Brawler");
 
                         // Give player a chance once hit by brawler.
                         // Without invulnerability many collisions detected before player has a chance to get away
@@ -209,7 +209,8 @@ let CollidableMixIn = Base => class extends Base {
                 }
                 //This is unique to bullet, and will probably have to stay. Maybe change to delete bullet on collision
                 if (entity instanceof Bullet) { //Bullet collided with block
-                    console.log("Bullet collided with block");
+                    // console.log("Bullet collided with block");
+                    player.deleteBullet(entity.id);
                     if (entity.speed > 0) {
                         entity.x -= (entity.speed);
                     }
