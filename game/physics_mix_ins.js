@@ -62,7 +62,7 @@ let MovementMixIn = Base => class extends Base {
     }
 
     movedown() {
-        this.speedY += 5;
+        // this.speedY += 5;
 
     }
 
