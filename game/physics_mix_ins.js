@@ -26,6 +26,7 @@ let GravityMixIn = Base => class extends Base {
 
     gravity_update(entity) {
         entity.gravitySpeed += entity.gravity;
+        if (entity.gravitySpeed > 0) entity.can_jump = false;
         if (entity.gravitySpeed > MAX_GRAVITY) {
             entity.gravitySpeed = MAX_GRAVITY;
         }
@@ -49,19 +50,19 @@ let MovementMixIn = Base => class extends Base {
     movement_update(entity) {
         entity.x += entity.speedX;
         entity.y += entity.speedY;
-        if (entity.x < BLOCK_SIZE) { // Prevent moving left through walls
-            entity.x = BLOCK_SIZE;
-        }
-        if (entity.x > (MAP_1[0].length * BLOCK_SIZE)-(BLOCK_SIZE+30)) { // Prevent moving right through walls
-            entity.x = (MAP_1[0].length * BLOCK_SIZE)-(BLOCK_SIZE+30);
-        }
-        if (entity.y > (MAP_1.length * BLOCK_SIZE) - (BLOCK_SIZE+60)) { // Prevent moving down through floors
-            entity.y = (MAP_1.length * BLOCK_SIZE) - (BLOCK_SIZE+60);
-        }
+        // if (entity.x < BLOCK_SIZE) { // Prevent moving left through walls
+        //     entity.x = BLOCK_SIZE;
+        // }
+        // if (entity.x > (MAP_1[0].length * BLOCK_SIZE)-(BLOCK_SIZE+30)) { // Prevent moving right through walls
+        //     entity.x = (MAP_1[0].length * BLOCK_SIZE)-(BLOCK_SIZE+30);
+        // }
+        // if (entity.y > (MAP_1.length * BLOCK_SIZE) - (BLOCK_SIZE+60)) { // Prevent moving down through floors
+        //     entity.y = (MAP_1.length * BLOCK_SIZE) - (BLOCK_SIZE+60);
+        // }
     }
 
     movedown() {
-        this.speedY += 5;
+        // this.speedY += 5;
 
     }
 
@@ -175,41 +176,34 @@ let CollidableMixIn = Base => class extends Base {
         });
 
         //Check collisions between entity and environment
+        var topLeftCollision = false;
+        var topRightCollision = false;
+        var bottomLeftCollision = false;
+        var bottomRightCollision = false;
         for(var i = 0; i < map.length; i++) {
             var block = map[i];
             if (entity.detectCollision(block.x, block.y, BLOCK_SIZE, BLOCK_SIZE)) {
                 //Collision with a block
 
-                //Some of these tests are unique to player, others (falling) are not, but here temporarily
-                if (entity instanceof Player) { // Player collided with block
-                    if (entity.gravitySpeed < 0) {
-                        entity.y += (entity.gravitySpeed + 20);
-                        entity.gravitySpeed = 0;
-                        entity.speedY = 0;
-                    }
-                    if (entity.gravitySpeed > 0) {
-                        entity.y -= (entity.gravitySpeed);
-                        entity.gravitySpeed = 0;
-                        entity.speedY = 0;
-                        if (entity.id === playerID) {
-                            entity.can_jump = true;
-                        }
-                    }
+                if (entity.detectPointCollision(entity.x, entity.y,
+                    block.x, block.y, BLOCK_SIZE, BLOCK_SIZE)) {
+                    topLeftCollision = true;
                 }
-                //Not unique to Brawler, but here temporarily
-                if (entity instanceof Brawler) { //Brawler collided with block
-                    if (entity.gravitySpeed > 0) {
-                        entity.y -= (entity.gravitySpeed);
-                        entity.gravitySpeed = 0;
-                        entity.speedY = 0;
-                        if (entity.id === playerID) {
-                            entity.can_jump = true;
-                        }
-                    }
+                if (entity.detectPointCollision(entity.x + entity.width, entity.y,
+                    block.x, block.y, BLOCK_SIZE, BLOCK_SIZE)) {
+                    topRightCollision = true;
                 }
-                //This is unique to bullet, and will probably have to stay. Maybe change to delete bullet on collision
+                if (entity.detectPointCollision(entity.x, entity.y + entity.height,
+                    block.x, block.y, BLOCK_SIZE, BLOCK_SIZE)) {
+                    bottomLeftCollision = true;
+                }
+                if (entity.detectPointCollision(entity.x + entity.width, entity.y + entity.height,
+                    block.x, block.y, BLOCK_SIZE, BLOCK_SIZE)) {
+                    bottomRightCollision = true;
+                }
+
+                //This is unique to bullet
                 if (entity instanceof Bullet) { //Bullet collided with block
-                    // console.log("Bullet collided with block");
                     player.deleteBullet(entity.id);
                     if (entity.speed > 0) {
                         entity.x -= (entity.speed);
@@ -220,17 +214,77 @@ let CollidableMixIn = Base => class extends Base {
                 }
             }
         }
+        if (!(entity instanceof Key ||
+            entity instanceof Gate ||
+            entity instanceof Bullet)) {
+
+            if ((topLeftCollision && bottomLeftCollision) || (topRightCollision && bottomRightCollision)) {
+                entity.x -= entity.speedX;
+                entity.speedX = 0;
+            }
+
+            if (bottomLeftCollision && bottomRightCollision) {
+                entity.y -= entity.gravitySpeed;
+                entity.gravitySpeed = 0;
+                if (entity.id === playerID) {
+                    entity.can_jump = true;
+                }
+            } else if ((bottomLeftCollision || bottomRightCollision) && !(topLeftCollision || topRightCollision)) {
+                if (entity.gravitySpeed > 0) {
+                    entity.y -= entity.gravitySpeed;
+                    entity.gravitySpeed = 0;
+                    if (entity.id === playerID) {
+                        entity.can_jump = true;
+                    }
+                }
+                if ((bottomLeftCollision && entity.speedX < 0) || (bottomRightCollision && entity.speedX > 0)) {
+                    entity.x -= entity.speedX;
+                    entity.speedX = 0;
+                }
+            }
+
+            if (topLeftCollision && topRightCollision) {
+                entity.y += (entity.gravitySpeed + 10);
+                entity.gravitySpeed = 0;
+            } else if ((topLeftCollision || topRightCollision) && !(bottomLeftCollision || bottomRightCollision)) {
+                if (entity.gravitySpeed > 0) {
+                    entity.x -= entity.speedX;
+                    entity.speedX = 0;
+                } else if (entity.gravitySpeed < 0) {
+                    entity.y += (entity.gravitySpeed + 10);
+                    entity.gravitySpeed = 0;
+                }
+            }
+        }
     }
 
     detectCollision(otherX, otherY, otherWidth, otherHeight) {
         //Test for x-axis overlap
-        if(this.x <= (otherX + otherWidth) &&
-        otherX <= this.x + this.width) {
+        if(this.x < (otherX + otherWidth) &&
+        otherX < this.x + this.width) {
 
             //Test for y-axis overlap
             if(this.y <= (otherY + otherHeight) &&
             otherY <= this.y + this.height) {
                 //Collision!
+                return true;
+            } else {
+                return false;
+            }
+
+        } else {
+            return false;
+        }
+    }
+
+    detectPointCollision(pointX, pointY, otherX, otherY, otherWidth, otherHeight) {
+        //Test for x-axis overlap
+        var tolerance = 1;
+        if (pointX >= otherX && pointX <= (otherX + otherWidth)) {
+
+            //Test for y-axis overlap
+            if (pointY >= otherY && pointY <= otherY + otherHeight) {
+                //Point inside!
                 return true;
             } else {
                 return false;
