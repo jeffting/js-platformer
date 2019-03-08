@@ -3,6 +3,7 @@ var player = null;
 let viewport = Viewport.getInstance();
 var playerID = null;
 function mainLoop() {
+    music.play();
     gameArea.clear();
     //Possible bug -> drawing map before viewport updates.
     for(var i = 0; i < map.length; i++){
@@ -27,7 +28,7 @@ function startGame() {
     entities.push(player);
     entities.push(new Brawler("green", 500, 120));
     entities.push(new HUD(player, CANVAS_WIDTH, 50, 0,0));
-    gameArea.start();
+    gameArea.start(); 
 }
 
 // Start things off
