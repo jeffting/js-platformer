@@ -54,6 +54,8 @@ let ShootingActionMixIn = Base => class extends Base {
 
     addAmmo() {
         this.ammoArray.push(1);
+        var reloadSound = new sound("reloading.mp3");
+        reloadSound.play();
     }
 }
 

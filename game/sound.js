@@ -12,3 +12,5 @@ function sound(src) {
       this.sound.pause();
     }
   }
+
+  var music = new sound("Groovy-funky-music-clip.mp3");
