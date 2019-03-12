@@ -1,6 +1,8 @@
 //Initially, viewport will keep player in the center of the canvas at all times, ignoring borders of the level
 //Eventually will prevent viewport from moving beyond the borders of the level
 
+var instance = null;
+
 class Viewport {
 
     constructor() {
@@ -14,14 +16,12 @@ class Viewport {
         this.bottomBoundary = this.y + CANVAS_HEIGHT;
     }
 
-    static _instance = null;
-
     static getInstance() {
-        if (this._instanceinstance == null) {
-            this._instanceinstance = new Viewport();
-            return this._instanceinstance;
+        if (instance == null) {
+            instance = new Viewport();
+            return instance;
         } else {
-            return this._instanceinstance;
+            return instance;
         }
     }
 
