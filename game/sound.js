@@ -14,3 +14,4 @@ function sound(src) {
   }
 
   var music = new sound("Groovy-funky-music-clip.mp3");
+  var introMusic = new sound("Mysterious-synth-pad-104-bpm.mp3");

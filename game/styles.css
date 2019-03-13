@@ -21,3 +21,11 @@ body {
 #game-canvas {
 	background:  #f1f1f1;
 }
+
+
+
+@font-face {
+	font-family: 'gameFont';
+	src:
+		url('Diary of an 8-bit mage.woff');
+	}
