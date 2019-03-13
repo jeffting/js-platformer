@@ -3,7 +3,8 @@ class Player extends CollidableMixIn(
         MovementMixIn(
             JumpingMixIn(
                 ShootingActionMixIn(
-                    KeyboardControlMixIn(Entity)))))) {
+                    HealthMixin(
+                      KeyboardControlMixIn(Entity))))))) {
 
     constructor(width, height, color, x, y) {
         super();
@@ -16,8 +17,10 @@ class Player extends CollidableMixIn(
         this.gravity_setup();
         this.movement_setup(.5);
         this.jumping_setup();
+        this.health_setup(3);
         this.shooting_setup();
         this.collidable_setup();
+
     }
 
     draw() {

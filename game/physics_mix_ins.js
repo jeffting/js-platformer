@@ -13,6 +13,7 @@ let VectorMovementMixIn = Base => class extends Base {
     }
 }
 
+
 let GravityMixIn = Base => class extends Base {
     gravity_setup() {
         if (!this.update_mix_ins) {
@@ -145,6 +146,12 @@ let CollidableMixIn = Base => class extends Base {
                     if(entity.detectCollision(otherEntity.x, otherEntity.y, otherEntity.width, otherEntity.height)) {
                         //Player ran into Brawler!
                         // console.log("Player collided with Brawler");
+                        if(entity.can_be_damaged) {
+                            entity.set_damage_points(-1);
+                            setTimeout(() => {
+                                entity.set_can_be_damaged(true);
+                            }, 1000);
+                        }
 
                         // Give player a chance once hit by brawler.
                         // Without invulnerability many collisions detected before player has a chance to get away
@@ -166,6 +173,8 @@ let CollidableMixIn = Base => class extends Base {
                 if (otherEntity instanceof Brawler) {
                     if(entity.detectCollision(otherEntity.x, otherEntity.y, otherEntity.width, otherEntity.height)) {
                         //Bullet hit Brawler!
+                        player.deleteBullet(entity.id);
+                        otherEntity.set_damage_points(-1);
                         var robotSound = new sound("aiBubbleSound.mp3");
                         robotSound.play();
                         console.log("Bullet collided with Brawler");

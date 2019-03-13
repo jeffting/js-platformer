@@ -11,7 +11,6 @@ let ShootingActionMixIn = Base => class extends Base {
     }
 
     shooting_update(entity) {
-
     }
 
     action() {
@@ -59,3 +58,33 @@ let ShootingActionMixIn = Base => class extends Base {
     }
 }
 
+
+
+let HealthMixin = Base => class extends Base {
+    health_setup(hp) {
+        if (!this.update_mix_ins) {
+            this.update_mix_ins = [];
+        }
+        this.healthPoints = hp;
+        this.damagePoints = 0;
+        this.update_mix_ins.push(this.health_update);
+        this.can_be_damaged = true;
+
+    }
+
+    health_update(entity) {
+        
+        entity.healthPoints = entity.healthPoints + entity.damagePoints; // damage points can take away hp or give hp. If negative it takes away hp.
+        entity.damagePoints = 0;
+
+    }
+
+    set_damage_points(dp) {  // dp is damage points
+        this.damagePoints = dp;
+        this.can_be_damaged = false;
+    }
+
+    set_can_be_damaged(bool) {
+        this.can_be_damaged = bool;
+    }
+}

@@ -1,7 +1,8 @@
 class Brawler extends CollidableMixIn(
     GravityMixIn(
         MovementMixIn(
-            MeanderingAIMixIn(Entity)))) {
+            HealthMixin(
+                MeanderingAIMixIn(Entity))))) {
 
     constructor(color, x, y) {
         super();
@@ -13,7 +14,9 @@ class Brawler extends CollidableMixIn(
         this.gravity_setup();
         this.movement_setup(.15);
         this.meandering_ai_setup(this.x, 100, 100);
+        this.health_setup(5);
         this.collidable_setup();
+
     }
 
     draw() {
@@ -24,5 +27,6 @@ class Brawler extends CollidableMixIn(
         let view_y = view_coords[1];
 
         CTX.drawImage(image, view_x, view_y, this.width, this.height);
+
     }
 }
