@@ -27,6 +27,5 @@ class Brawler extends CollidableMixIn(
         let view_y = view_coords[1];
 
         CTX.drawImage(image, view_x, view_y, this.width, this.height);
-
     }
 }

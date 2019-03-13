@@ -76,7 +76,9 @@ let HealthMixin = Base => class extends Base {
         
         entity.healthPoints = entity.healthPoints + entity.damagePoints; // damage points can take away hp or give hp. If negative it takes away hp.
         entity.damagePoints = 0;
-
+        if (entity.healthPoints <= 0) {
+            entity.remove_entity(entity);
+        }
     }
 
     set_damage_points(dp) {  // dp is damage points
@@ -86,5 +88,12 @@ let HealthMixin = Base => class extends Base {
 
     set_can_be_damaged(bool) {
         this.can_be_damaged = bool;
+    }
+
+    remove_entity(entity) {
+        if (entity instanceof Player) {
+            gameState = "DEAD";
+        }
+        entities.pop(entity);
     }
 }

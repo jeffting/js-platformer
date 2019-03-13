@@ -15,6 +15,8 @@ const KEY_LEFT = 37;
 const KEY_RIGHT = 39;
 const KEY_SPACE = 32;
 
+var gameState = "GAME";
+
 var canvas = document.getElementById("game-canvas");
 canvas.height = CANVAS_HEIGHT;
 canvas.width = CANVAS_WIDTH;
