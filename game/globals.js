@@ -14,8 +14,20 @@ const KEY_DOWN = 40;
 const KEY_LEFT = 37;
 const KEY_RIGHT = 39;
 const KEY_SPACE = 32;
+const KEY_ESCAPE = 27;
+const KEY_ENTER = 13;
 
-var gameState = "GAME";
+//gameState constants
+const INTRO_STATE = "INTRO"; //intro cutscene state
+const MENU_STATE = "MENU";
+const PLAY_STATE = "PLAY"; 
+const DEAD_STATE = "DEAD";
+const WIN_STATE = "WIN";
+
+//start off with the text intro
+var gameState = INTRO_STATE;
+
+var doorUnlocked = false;
 
 var canvas = document.getElementById("game-canvas");
 canvas.height = CANVAS_HEIGHT;

@@ -130,6 +130,10 @@ let CollidableMixIn = Base => class extends Base {
                 if (otherEntity instanceof Key) { //against key
                     if(entity.detectCollision(otherEntity.x, otherEntity.y, otherEntity.width, otherEntity.height)) {
                         //Player ran into Key!
+                        var rockCollisionSound = new sound("tone.mp3");
+                        rockCollisionSound.play();
+                        entities.pop(otherEntity);
+                        doorUnlocked = true;
                         console.log("Player collided with Key");
                     }
                 }
@@ -137,6 +141,15 @@ let CollidableMixIn = Base => class extends Base {
                 if (otherEntity instanceof Gate) { //against gate
                     if(entity.detectCollision(otherEntity.x, otherEntity.y, otherEntity.width, otherEntity.height)) {
                         //Player ran into Gate!
+                        if(!doorUnlocked){
+                            var lockedDoorBeep = new sound("Wrong-alert-beep-sound.mp3");
+                            lockedDoorBeep.play();
+                        }
+                        else{
+                            var victorySound = new sound("chime.mp3");
+                            victorySound.play();
+                            gameState = WIN_STATE;
+                        }
                         console.log("Player collided with Gate");
                     }
                 }

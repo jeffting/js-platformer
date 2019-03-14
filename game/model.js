@@ -23,6 +23,10 @@ var gameArea = {
     },
     clear : function() {
         CTX.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+    },
+    clearGray : function() {
+        CTX.fillStyle = "#D3D3D3";//gray
+        CTX.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
     }
 }
 
