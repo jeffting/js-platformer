@@ -20,12 +20,15 @@ var gameArea = {
         window.addEventListener('keyup', function (e) {
             gameArea.keys[e.keyCode] = (e.type == "keydown");
         })
+        window.addEventListener('keyenter', function (e) {
+            gameArea.keys[e.keyCode] = (e.type == "keyenter");
+        })
     },
     clear : function() {
         CTX.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
     },
-    clearBlack : function() {
-        CTX.fillStyle = "#D3D3D3";
+    clearGray : function() {
+        CTX.fillStyle = "#D3D3D3";//gray
         CTX.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
     }
 }

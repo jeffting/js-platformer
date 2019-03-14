@@ -92,7 +92,7 @@ let HealthMixin = Base => class extends Base {
 
     remove_entity(entity) {
         if (entity instanceof Player) {
-            gameState = "DEAD";
+            gameState = DEAD_STATE;
         }
         entities.pop(entity);
     }

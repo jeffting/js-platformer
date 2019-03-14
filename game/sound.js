@@ -15,3 +15,5 @@ function sound(src) {
 
   var music = new sound("Groovy-funky-music-clip.mp3");
   var introMusic = new sound("Mysterious-synth-pad-104-bpm.mp3");
+  var winMusic = new sound("8-bit-world.mp3");
+  var lossMusic = new sound("Maria-theresia-von-paradis-sicilienne.mp3");

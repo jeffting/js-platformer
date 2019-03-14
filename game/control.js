@@ -2,43 +2,50 @@
 var player = null;
 let viewport = Viewport.getInstance();
 var playerID = null;
-var cutScene = true;
 var i = 0; //used as a timer
+var scrollY = 0;
+var scrollYTitle = 0;
 //var text1 = null;
 
 function mainLoop() {
-    // music.play();
     gameArea.clear();
     //Possible bug -> drawing map before viewport updates.
-    //text1.draw();
-    if(i >= 3000){
-        cutScene = false;
+    if(i >= 2600 && gameState == INTRO_STATE){
+        gameState = MENU_STATE;
     }
-    if(cutScene){
+    if(gameState == INTRO_STATE){
         introMusic.play();
-        //CTX.font = "100px gameFont";
-        //CTX.fillText(i, 100, 300); 
-        displayIntroText(i);
-        
+        displayIntroText();
+        i++;  
+        if (gameArea.keys)  { //press any key to skip intro
+            gameState = MENU_STATE;
+        }   
     }
-    else{
+    else if (gameState == MENU_STATE){ //press ENTER to start gameplay
+        winMusic.stop();
+        lossMusic.stop();
+        if (gameArea.keys && gameArea.keys[KEY_ENTER])  {
+            gameState = PLAY_STATE;
+        }
+        displayMenuScreen();
+    }
+    else if (gameState == PLAY_STATE){
         introMusic.stop();
         music.play();
         gameLoopDraw();
     }
-
-
-    // for(var i = 0; i < map.length; i++){
-    //     map[i].draw();
-    // }
-    // entities.each(function(entity) {
-    //     entity.update();
-    //     if (entity.id === playerID) {
-    //         viewport.update(entity.x, entity.y);
-    //     }
-    //     entity.draw();
-    // });
-    i++;
+    else if (gameState == WIN_STATE){
+        music.stop();
+        winMusic.play();
+        displayWinScreen();
+        //todo: add code in here to move on to next level, or return to main loop
+    }
+    else if (gameState == DEAD_STATE){
+        music.stop();
+        lossMusic.play();
+        displayLossScreen();
+        //todo: add code in here to restart level or return to main loop
+    }
     requestAnimationFrame(mainLoop);
 }
 
@@ -56,11 +63,6 @@ function gameLoopDraw(){
 }
 
 function startGame() {
-    // for(var i = 0; i < 99999; i ++){
-    //     CTX.font = "300px Arial";
-    //     CTX.fillText("Hello World", 10, 50);
-    // }
-
     player = new Player(30, 60, "red", playerStartX, playerStartY);
     viewport.update(playerStartX, playerStartY);
     playerID = player.id;
@@ -69,50 +71,74 @@ function startGame() {
     entities.push(player);
     entities.push(new Brawler("green", 500, 120));
     entities.push(new HUD(player, CANVAS_WIDTH, 50, 0,0));
-    //text1 = new GameText(300,300,"Hello World!!", 300);
-    displayIntroText();
-
     gameArea.start(); 
 }
 
-function displayIntroText(i) {
-    // CTX.fillStyle = "#FFFF33";
-    CTX.font = "50px gameFont";
-    
-    gameArea.clearBlack();
+function displayWinScreen(){
+    gameArea.clearGray();
+    CTX.font = "100px gameFont";
     CTX.fillStyle = "#0000FF";
-    if(i < 500){
-        CTX.fillText("In the year 2222,", 0, 2*CANVAS_HEIGHT/10);
-    }
-    if((i < 500) && (i > 100)){
-        CTX.fillText("An intrepid space explorer prepares to", 0, 3 *CANVAS_HEIGHT/10); 
-    }
-    if((i < 500) && (i > 200)){
-        CTX.fillText("leave I/O, a moon of Jupyter, to return", 0, 4 *   CANVAS_HEIGHT/10);
-    }
-    if((i < 500) && (i > 300)){
-        CTX.fillText("to his home planet.", 0, 5*   CANVAS_HEIGHT/10);
-    }
-    if(i < 1000 && i > 500){
-        CTX.fillText("He has collected samples of the", 0, 3*   CANVAS_HEIGHT/10);
-    }
-    if(i < 1000 && i > 600){
-        CTX.fillText("radioactive moon rocks", 0, 4*   CANVAS_HEIGHT/10);
-    }
-    if(i < 1000 && i > 700){
-        CTX.fillText("placed them aboard his spacecraft.", 0, 5*   CANVAS_HEIGHT/10);
-    }
-    if(i < 2000 && i > 1100){
-        CTX.fillText("However, the presence of the radioactive rocks causes the ship's AI to go haywire!", 0, 3*CANVAS_HEIGHT/10);
-        //CTX.fillText("The friendly MAC-2000 shipboard AI and defenses turn against their human master.", 0, 300);
-    }
-    // else if(i < 1200){
-    //     CTX.fillText("Battling for life and limb, the space explorer must survive the onslaught of the rogue AI.", 100, 300);
-    // }
-
-    
-    //CTX.fillText("holla!", 100, 300);
+    CTX.fillText("LEVEL COMPLETE!", 0, CANVAS_HEIGHT/2);
 }
+
+function displayLossScreen(){
+    gameArea.clearGray();
+    CTX.font = "100px gameFont";
+    CTX.fillStyle = "#0000FF";
+    CTX.fillText("GAME OVER!", 0, CANVAS_HEIGHT/2);
+}
+
+function displayMenuScreen(){
+    gameArea.clearGray();
+    CTX.font = "100px gameFont";
+    CTX.fillStyle = "#0000FF";
+    CTX.fillText("SPACE MISTAKE", 0, CANVAS_HEIGHT/2);
+
+    CTX.font = "50px gameFont";
+    CTX.fillText("Press ENTER to Start Game", 0, .9*CANVAS_HEIGHT);
+}
+
+function displayIntroText() {
+    CTX.font = "50px gameFont";
+    gameArea.clearGray();
+    CTX.fillStyle = "#0000FF";
+
+    CTX.fillText("In the year 2222,", 0, CANVAS_HEIGHT + scrollY);
+    
+    CTX.fillText("An intrepid space explorer prepares to", 0, 1.2*CANVAS_HEIGHT + scrollY); 
+    CTX.fillText("depart I/O, a moon of Jupyter, after", 0, 1.3*   CANVAS_HEIGHT + scrollY);
+    CTX.fillText("completing a scientific mission there.", 0, 1.4*   CANVAS_HEIGHT + scrollY);
+    
+    CTX.fillText("He has collected samples of radioactive", 0, 1.6*   CANVAS_HEIGHT + scrollY);
+    CTX.fillText("moon rocks and placed them aboard his", 0, 1.7*   CANVAS_HEIGHT + scrollY);
+    CTX.fillText("spacecraft.", 0, 1.8*   CANVAS_HEIGHT + scrollY);
+    
+    CTX.fillText("However, the presence of the", 0, 2*CANVAS_HEIGHT + scrollY);
+    CTX.fillText("radioactive rocks causes the ship's", 0, 2.1*CANVAS_HEIGHT + scrollY);
+    CTX.fillText("AI to go haywire!", 0, 2.2*CANVAS_HEIGHT + scrollY);
+    
+    CTX.fillText("The friendly MAC-2000 shipboard AI and", 0, 2.4*CANVAS_HEIGHT + scrollY);
+    CTX.fillText("defenses turn against their human", 0, 2.5*CANVAS_HEIGHT+ scrollY);
+    CTX.fillText("master.", 0, 2.6*CANVAS_HEIGHT+ scrollY);
+
+    CTX.fillText("Battling for life and limb, the space", 0, 2.8*CANVAS_HEIGHT+ scrollY);
+    CTX.fillText("explorer must survive the onslaught of", 0, 2.9*CANVAS_HEIGHT+ scrollY);
+    CTX.fillText("the rogue AI.", 0, 3*CANVAS_HEIGHT+ scrollY);
+
+    CTX.fillText("He must also collect the moon rocks", 0, 3.2*CANVAS_HEIGHT+ scrollY);
+    CTX.fillText("and remove them from his spaceship", 0, 3.3*CANVAS_HEIGHT+ scrollY);
+    CTX.fillText("to reset the ship's systems.", 0, 3.4*CANVAS_HEIGHT+ scrollY);
+
+    CTX.fillText("His only chance for survival is to", 0, 3.6*CANVAS_HEIGHT+ scrollY);
+    CTX.fillText("fix his...", 0, 3.7*CANVAS_HEIGHT+ scrollY);
+
+    CTX.font = "100px gameFont";
+    CTX.fillText("SPACE MISTAKE", 0, 4*CANVAS_HEIGHT+ scrollYTitle);
+    scrollY--;
+    if(4*CANVAS_HEIGHT+ scrollYTitle > CANVAS_HEIGHT/2){
+        scrollYTitle = scrollY;
+    }
+ }
 
 // Start things off
 requestAnimationFrame(mainLoop);
