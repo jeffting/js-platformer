@@ -135,7 +135,6 @@ let CollidableMixIn = Base => class extends Base {
                         entities.pop(otherEntity);
                         doorUnlocked = true;
                         console.log("Player collided with Key");
-                        
                     }
                 }
 

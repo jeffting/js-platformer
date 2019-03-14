@@ -2,10 +2,9 @@
 var player = null;
 let viewport = Viewport.getInstance();
 var playerID = null;
-var i = 0; //used as a timer
+var i = 0; //used as a timer for the intro state
 var scrollY = 0;
 var scrollYTitle = 0;
-//var text1 = null;
 
 function mainLoop() {
     gameArea.clear();
