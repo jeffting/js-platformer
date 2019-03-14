@@ -13,7 +13,7 @@ class HUD extends Entity {
     }
 
     draw() {
-        CTX.fillStyle = "rgb(204, 204, 255)";
+        CTX.fillStyle = "rgb(220, 220, 220)";
         CTX.fillRect(this.xpos, this.ypos, this.width, this.height);
 
         CTX.font = "40px Arial";
@@ -30,6 +30,17 @@ class HUD extends Entity {
         }
         if (bullets > 2) {
             CTX.fillRect(CANVAS_WIDTH - 40, 10, 20, 30);
+        }
+
+
+        CTX.font = "40px Arial";
+        CTX.fillStyle = "black";
+        CTX.fillText("Health:", 10, 40);
+        let health = this.player.healthPoints;
+        let image = images.get("heart");
+
+        for (let i = 0; i < health; i++) {
+            CTX.drawImage(image, 150 + (i * 40), 10, 30, 30);
         }
     }
 }

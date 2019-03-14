@@ -160,18 +160,12 @@ let CollidableMixIn = Base => class extends Base {
                         //Player ran into Brawler!
                         // console.log("Player collided with Brawler");
                         if(entity.can_be_damaged) {
+                            var playerHitSound = new sound("playerGruntingSound.mp3");
+                            playerHitSound.play();
                             entity.set_damage_points(-1);
                             setTimeout(() => {
                                 entity.set_can_be_damaged(true);
                             }, 1000);
-                        }
-
-                        // Give player a chance once hit by brawler.
-                        // Without invulnerability many collisions detected before player has a chance to get away
-                        if(!entity.invulnerable) {
-                            var playerHitSound = new sound("playerGruntingSound.mp3");
-                            playerHitSound.play();
-                            entity.damagePlayer();
                         }
                     }
                 }
@@ -317,13 +311,13 @@ let CollidableMixIn = Base => class extends Base {
         }
     }
 
-    damagePlayer() {
-        this.invulnerable = true;
-        let that = this;
-        setTimeout(function() {
-            that.invulnerable = false;
-        }, 2000);
-    }
+    // damagePlayer() {
+    //     this.invulnerable = true;
+    //     let that = this;
+    //     setTimeout(function() {
+    //         that.invulnerable = false;
+    //     }, 2000);
+    // }
 
 };
 
