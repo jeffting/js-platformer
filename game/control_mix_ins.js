@@ -13,7 +13,6 @@ let KeyboardControlMixIn = Base => class extends Base {
     }
 
     keyboard_control_update(entity) {
-        entity.speedY = 0;
         if (gameArea.keys && gameArea.keys[entity.left_key]) { entity.moveleft(); }
         if (gameArea.keys && gameArea.keys[entity.right_key]) { entity.moveright(); }
         if (gameArea.keys && gameArea.keys[entity.up_key]) { entity.moveup(); }
@@ -22,6 +21,12 @@ let KeyboardControlMixIn = Base => class extends Base {
             entity.speedX = entity.speedX > 0 ? entity.speedX -0.5 : entity.speedX + 0.5;
         }
         if (gameArea.keys && gameArea.keys[entity.action_key]) { entity.action(); }
+    }
+}
+
+let AIMixIn = Base => class extends Base {
+    ai_setup() {
+        this.is_ai = true;
     }
 }
 
@@ -52,6 +57,26 @@ let MeanderingAIMixIn = Base => class extends Base {
                 entity.direction = "left";
                 entity.moveleft();
             }
+        }
+    }
+}
+
+let DelayedActionMixIn = Base => class extends Base {
+    delayed_action_setup(delay, action) {
+        if (!this.update_mix_ins) {
+            this.update_mix_ins = [];
+        }
+        this.update_mix_ins.push(this.delayed_action_update);
+        this.delay = delay;
+        this.action = action;
+        this.delay_counter = 0;
+    }
+
+    delayed_action_update(entity) {
+        entity.delay_counter++;
+        if (entity.delay_counter > entity.delay) {
+            entity.delay_counter = 0;
+            entity.action();
         }
     }
 }

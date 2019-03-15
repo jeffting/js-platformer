@@ -21,36 +21,50 @@ let GravityMixIn = Base => class extends Base {
         }
         this.update_mix_ins.push(this.gravity_update);
 
-        this.gravity = 0.3
-        this.gravitySpeed = 0;
+        this.speedX = 0;
+        this.speedY = 0;
+        this.gravity = 0.3;
     }
 
     gravity_update(entity) {
-        entity.gravitySpeed += entity.gravity;
-        if (entity.gravitySpeed > 0) entity.can_jump = false;
-        if (entity.gravitySpeed > MAX_GRAVITY) {
-            entity.gravitySpeed = MAX_GRAVITY;
+        entity.speedY += entity.gravity;
+        if (entity.speedY > MAX_GRAVITY) {
+            entity.speedY = MAX_GRAVITY;
         }
-        entity.y += entity.gravitySpeed;
+        entity.y += entity.speedY;
+        entity.x += entity.speedX;
     }
 }
 
-let MovementMixIn = Base => class extends Base {
-    movement_setup(acceleration) {
+let NoGravityMixIn = Base => class extends Base {
+    no_gravity_setup() {
+        if (!this.update_mix_ins) {
+            this.update_mix_ins = [];
+        }
+        this.update_mix_ins.push(this.no_gravity_update);
+
+        this.speedX = 0;
+        this.speedY = 0;
+    }
+
+    no_gravity_update(entity) {
+        entity.x += entity.speedX;
+        entity.y += entity.speedY;
+    }
+}
+
+let MovementControlMixIn = Base => class extends Base {
+    movement_control_setup(acceleration) {
         if (!this.update_mix_ins) {
             this.update_mix_ins = [];
         }
         this.update_mix_ins.push(this.movement_update);
 
-        this.speedX = 0;
-        this.speedY = 0;
         this.acceleration = acceleration;
         this.direction = "right";
     }
 
     movement_update(entity) {
-        entity.x += entity.speedX;
-        entity.y += entity.speedY;
         // if (entity.x < BLOCK_SIZE) { // Prevent moving left through walls
         //     entity.x = BLOCK_SIZE;
         // }
@@ -86,6 +100,7 @@ let JumpingMixIn = Base => class extends Base {
         this.update_mix_ins.push(this.jumping_update);
 
         this.can_jump = false;
+        this.jump_capable = true;
     }
 
     jumping_update(entity) {
@@ -96,8 +111,8 @@ let JumpingMixIn = Base => class extends Base {
         if (this.can_jump) {
             var jumpSound = new sound("jump.mp3");
             jumpSound.play();
-            this.speedY -= 5;
-            this.gravitySpeed = -10;
+            this.speedY -= 10;
+            this.y += this.speedY;
             this.can_jump = false;
         }
     }
@@ -155,7 +170,7 @@ let CollidableMixIn = Base => class extends Base {
                 }
 
                 //Check against all enemy types
-                if (otherEntity instanceof Brawler) { //against brawler
+                if (otherEntity.is_ai) { //against ai
                     if(entity.detectCollision(otherEntity.x, otherEntity.y, otherEntity.width, otherEntity.height)) {
                         //Player ran into Brawler!
                         // console.log("Player collided with Brawler");
@@ -176,8 +191,7 @@ let CollidableMixIn = Base => class extends Base {
                     //Do Nothing
                 }
 
-                //Check against all enemy types
-                if (otherEntity instanceof Brawler) {
+                if (otherEntity.is_ai) {
                     if(entity.detectCollision(otherEntity.x, otherEntity.y, otherEntity.width, otherEntity.height)) {
                         //Bullet hit Brawler!
                         player.deleteBullet(entity.id);
@@ -240,16 +254,16 @@ let CollidableMixIn = Base => class extends Base {
             }
 
             if (bottomLeftCollision && bottomRightCollision) {
-                entity.y -= entity.gravitySpeed;
-                entity.gravitySpeed = 0;
-                if (entity.id === playerID) {
+                entity.y -= entity.speedY;
+                entity.speedY = 0;
+                if (entity.jump_capable) {
                     entity.can_jump = true;
                 }
             } else if ((bottomLeftCollision || bottomRightCollision) && !(topLeftCollision || topRightCollision)) {
-                if (entity.gravitySpeed > 0) {
-                    entity.y -= entity.gravitySpeed;
-                    entity.gravitySpeed = 0;
-                    if (entity.id === playerID) {
+                if (entity.speedY > 0) {
+                    entity.y -= entity.speedY;
+                    entity.speedY = 0;
+                    if (entity.jump_capable) {
                         entity.can_jump = true;
                     }
                 }
@@ -260,15 +274,15 @@ let CollidableMixIn = Base => class extends Base {
             }
 
             if (topLeftCollision && topRightCollision) {
-                entity.y += (entity.gravitySpeed + 10);
-                entity.gravitySpeed = 0;
+                entity.y += (entity.speedY + 10);
+                entity.speedY = 0;
             } else if ((topLeftCollision || topRightCollision) && !(bottomLeftCollision || bottomRightCollision)) {
-                if (entity.gravitySpeed > 0) {
+                if (entity.speedY > 0) {
                     entity.x -= entity.speedX;
                     entity.speedX = 0;
-                } else if (entity.gravitySpeed < 0) {
-                    entity.y += (entity.gravitySpeed + 10);
-                    entity.gravitySpeed = 0;
+                } else if (entity.speedY < 0) {
+                    entity.y += (entity.speedY + 10);
+                    entity.speedY = 0;
                 }
             }
         }
