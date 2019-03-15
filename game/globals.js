@@ -64,7 +64,8 @@ var images = {
 images.load("brawler", "angry_face.png");
 images.load("key", "key.png");
 images.load("gate", "gate.png");
-
+images.load("heart", "heart.png");
+images.load("key_outline", "key_outline.png");
 
 
 var BLANK = [
