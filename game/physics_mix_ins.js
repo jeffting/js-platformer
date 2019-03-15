@@ -155,7 +155,7 @@ let CollidableMixIn = Base => class extends Base {
                 }
 
                 //Check against all enemy types
-                if (otherEntity instanceof Brawler) { //against brawler
+                if (otherEntity.is_ai) { //against ai
                     if(entity.detectCollision(otherEntity.x, otherEntity.y, otherEntity.width, otherEntity.height)) {
                         //Player ran into Brawler!
                         // console.log("Player collided with Brawler");
@@ -176,8 +176,7 @@ let CollidableMixIn = Base => class extends Base {
                     //Do Nothing
                 }
 
-                //Check against all enemy types
-                if (otherEntity instanceof Brawler) {
+                if (otherEntity.is_ai) {
                     if(entity.detectCollision(otherEntity.x, otherEntity.y, otherEntity.width, otherEntity.height)) {
                         //Bullet hit Brawler!
                         player.deleteBullet(entity.id);

@@ -25,6 +25,12 @@ let KeyboardControlMixIn = Base => class extends Base {
     }
 }
 
+let AIMixIn = Base => class extends Base {
+    ai_setup() {
+        this.is_ai = true;
+    }
+}
+
 let MeanderingAIMixIn = Base => class extends Base {
     meandering_ai_setup(center, crest, valley) {
         if (!this.update_mix_ins) {
