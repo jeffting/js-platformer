@@ -69,7 +69,7 @@ function startGame() {
     entities.push(new Key(keyStartX, keyStartY+10));
     entities.push(player);
     entities.push(new Brawler("green", 500, 120));
-    entities.push(new Jumper("green", 240, 740));
+    entities.push(new Jumper("green", 240, 500));
     entities.push(new HUD(player, CANVAS_WIDTH, 50, 0,0));
     gameArea.start(); 
 }

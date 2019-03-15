@@ -1,6 +1,6 @@
 class Brawler extends CollidableMixIn(
     GravityMixIn(
-        MovementMixIn(
+        MovementControlMixIn(
             HealthMixin(
                 MeanderingAIMixIn(
                     AIMixIn(Entity)))))) {
@@ -13,7 +13,7 @@ class Brawler extends CollidableMixIn(
         this.x = x;
         this.y = y;
         this.gravity_setup();
-        this.movement_setup(.15);
+        this.movement_control_setup(.15);
         this.meandering_ai_setup(this.x, 100, 100);
         this.health_setup(5);
         this.collidable_setup();
@@ -33,9 +33,9 @@ class Brawler extends CollidableMixIn(
 
 class Jumper extends CollidableMixIn(
     GravityMixIn(
-        MovementMixIn(
+        JumpingMixIn(
             HealthMixin(
-                MeanderingAIMixIn(
+                DelayedActionMixIn(
                     AIMixIn(Entity)))))) {
 
     constructor(color, x, y) {
@@ -46,11 +46,13 @@ class Jumper extends CollidableMixIn(
         this.x = x;
         this.y = y;
         this.gravity_setup();
-        this.movement_setup(.15);
-        this.meandering_ai_setup(this.x, 100, 100);
+        this.jumping_setup(.15);
+        this.delayed_action_setup(200, this.moveup);
         this.health_setup(5);
         this.collidable_setup();
         this.ai_setup();
+        this.can_jump = true;
+        console.log("Jumper:", this.id, this);
 
     }
 
