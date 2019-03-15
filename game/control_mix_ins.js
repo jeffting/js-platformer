@@ -76,8 +76,7 @@ let DelayedActionMixIn = Base => class extends Base {
         entity.delay_counter++;
         if (entity.delay_counter > entity.delay) {
             entity.delay_counter = 0;
-            console.log("Execuing action:", entity.id, entity, entity.moveup);
-            entity.moveup();
+            entity.action();
         }
     }
 }

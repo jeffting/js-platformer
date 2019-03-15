@@ -70,6 +70,7 @@ function startGame() {
     entities.push(player);
     entities.push(new Brawler("green", 500, 120));
     entities.push(new Jumper("green", 240, 500));
+    entities.push(new Flyer("green", 1340, 240));
     entities.push(new HUD(player, CANVAS_WIDTH, 50, 0,0));
     gameArea.start(); 
 }

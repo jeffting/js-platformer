@@ -36,6 +36,23 @@ let GravityMixIn = Base => class extends Base {
     }
 }
 
+let NoGravityMixIn = Base => class extends Base {
+    no_gravity_setup() {
+        if (!this.update_mix_ins) {
+            this.update_mix_ins = [];
+        }
+        this.update_mix_ins.push(this.no_gravity_update);
+
+        this.speedX = 0;
+        this.speedY = 0;
+    }
+
+    no_gravity_update(entity) {
+        entity.x += entity.speedX;
+        entity.y += entity.speedY;
+    }
+}
+
 let MovementControlMixIn = Base => class extends Base {
     movement_control_setup(acceleration) {
         if (!this.update_mix_ins) {
