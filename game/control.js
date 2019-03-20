@@ -37,13 +37,28 @@ function mainLoop() {
         music.stop();
         winMusic.play();
         displayWinScreen();
-        //todo: add code in here to move on to next level, or return to main loop
+        deleteEntities();
+        doorUnlocked = false;
+        if (gameArea.keys && gameArea.keys[KEY_ESCAPE])  { //press ESC to return to menu
+            gameState = MENU_STATE;
+            startGame();
+        }
+        if(gameArea.keys && gameArea.keys[KEY_ENTER]){
+            //gameState //next level
+            //startGame();
+        }
+
     }
     else if (gameState == DEAD_STATE){
         music.stop();
         lossMusic.play();
         displayLossScreen();
-        //todo: add code in here to restart level or return to main loop
+        deleteEntities();
+        doorUnlocked = false;
+        if (gameArea.keys && gameArea.keys[KEY_ESCAPE])  { //press ESC to return to menu
+            gameState = MENU_STATE;
+            startGame();
+        }   
     }
     requestAnimationFrame(mainLoop);
 }
@@ -75,11 +90,21 @@ function startGame() {
     gameArea.start(); 
 }
 
+function deleteEntities(){
+    entities.each(function(entity) {
+        entities.pop(entity);
+    });
+}
+
 function displayWinScreen(){
     gameArea.clearGray();
     CTX.font = "100px gameFont";
     CTX.fillStyle = "#0000FF";
     CTX.fillText("LEVEL COMPLETE!", 0, CANVAS_HEIGHT/2);
+
+    CTX.font = "50px gameFont";
+    CTX.fillText("Press ENTER to continue to NEXT LEVEL", 0, .8*CANVAS_HEIGHT);
+    CTX.fillText("Press ESC to return to MENU", 0, .9*CANVAS_HEIGHT);
 }
 
 function displayLossScreen(){
@@ -87,6 +112,9 @@ function displayLossScreen(){
     CTX.font = "100px gameFont";
     CTX.fillStyle = "#0000FF";
     CTX.fillText("GAME OVER!", 0, CANVAS_HEIGHT/2);
+
+    CTX.font = "50px gameFont";
+    CTX.fillText("Press ESC to return to MENU", 0, .9*CANVAS_HEIGHT);
 }
 
 function displayMenuScreen(){
