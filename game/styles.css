@@ -1,6 +1,6 @@
 
 body {
-	background-color: #00ea61;
+	background-image: url("space-mistake.png");
 	height: 100%;
 	width: 100%;
 	padding: 0;
@@ -19,7 +19,7 @@ body {
 }
 
 #game-canvas {
-	background:  #f1f1f1;
+	background:  rgb(211, 239, 255);
 }
 
 @font-face {
