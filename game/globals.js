@@ -66,7 +66,7 @@ images.load("key", "key.png");
 images.load("gate", "gate.png");
 images.load("heart", "heart.png");
 images.load("key_outline", "key_outline.png");
-
+images.load("ammo", "bullet-icon.png");
 
 var BLANK = [
 

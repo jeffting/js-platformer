@@ -22,15 +22,11 @@ class HUD extends Entity {
         CTX.fillText("Ammo:", CANVAS_WIDTH - 250, 40);
         let bullets = this.player.ammoArray.length;
 
-        CTX.fillStyle = "red";
-        if (bullets > 0) {
-            CTX.fillRect(CANVAS_WIDTH - 100, 10, 20, 30);
-        }
-        if (bullets > 1) {
-            CTX.fillRect(CANVAS_WIDTH - 70, 10, 20, 30);
-        }
-        if (bullets > 2) {
-            CTX.fillRect(CANVAS_WIDTH - 40, 10, 20, 30);
+        let bullet_image = images.get("ammo");
+        let bullet_icon_spacing = 30;
+
+        for(let k = 0; k < bullets; k++) {
+            CTX.drawImage(bullet_image, CANVAS_WIDTH - 100 + k * bullet_icon_spacing, 4, 15, 44);
         }
 
         //Draw health
