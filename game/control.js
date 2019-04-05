@@ -30,6 +30,7 @@ function mainLoop() {
     }
     else if (gameState == PLAY_STATE){
         introMusic.stop();
+        winMusic.stop();
         music.play();
         gameLoopDraw();
     }
@@ -46,6 +47,32 @@ function mainLoop() {
         if(gameArea.keys && gameArea.keys[KEY_ENTER]){
             //gameState //next level
             //startGame();
+            gameState = PLAY_STATE;
+            
+        
+            //
+            //LEVEL_ONE.deleteLevel();
+            if(levelState == LEVEL_ONE_STATE){
+                for (var i = 0; i < this.map.length; i++) {
+                    map.pop(LEVEL_ONE);
+                }
+                levelState = LEVEL_TWO_STATE;
+                var LEVEL_TWO = new Level(MAP_2);
+
+            }
+
+            startLevelTwo();
+            // if(levelState == LEVEL_ONE_STATE){
+            //     
+            
+            // var LEVEL_TWO = new Level(MAP_2);
+            //LEVEL_TWO.draw();
+            //map.push(LEVEL_TWO);
+            //map.pop(LEVEL_ONE);
+            //     gameState == PLAY_STATE;
+            //     startGame();
+            // }
+
         }
 
     }
@@ -89,6 +116,21 @@ function startGame() {
     entities.push(new HUD(player, CANVAS_WIDTH, 50, 0,0));
     gameArea.start(); 
 }
+
+function startLevelTwo() {
+    player = new Player(30, 60, "red", playerStartX, playerStartY);
+    viewport.update(playerStartX, playerStartY);
+    playerID = player.id;
+    entities.push(new Gate(gateX, gateY-10));
+    entities.push(new Key(keyStartX, keyStartY+10));
+    entities.push(player);
+    entities.push(new Brawler("green", 500, 120));
+    entities.push(new Jumper("green", 240, 500));
+    entities.push(new Flyer("green", 1340, 240));
+    entities.push(new HUD(player, CANVAS_WIDTH, 50, 0,0));
+    gameArea.start(); 
+}
+
 
 function deleteEntities(){
     entities.each(function(entity) {
