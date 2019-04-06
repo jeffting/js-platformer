@@ -60,13 +60,5 @@ class Level {
 
 	}
 
-	//removes the blocks from the map
-	deleteLevel() {
-		for (var i = 0; i < this.map.length; i++) {
-			map.pop(this);
-		}
-	}
-
-
 }
 

@@ -22,6 +22,7 @@ function mainLoop() {
     }
     else if (gameState == MENU_STATE){ //press ENTER to start gameplay
         winMusic.stop();
+        gameWonMusic.stop();
         lossMusic.stop();
         if (gameArea.keys && gameArea.keys[KEY_ENTER])  {
             gameState = PLAY_STATE;
@@ -31,59 +32,53 @@ function mainLoop() {
     else if (gameState == PLAY_STATE){
         introMusic.stop();
         winMusic.stop();
-        music.play();
+        if(levelState == LEVEL_ONE_STATE){
+            music.play();
+        }
+        else if(levelState == LEVEL_TWO_STATE){
+            level2Music.play();
+        }
         gameLoopDraw();
     }
     else if (gameState == WIN_STATE){
         music.stop();
-        winMusic.play();
-        displayWinScreen();
+        level2Music.stop();
         deleteEntities();
         doorUnlocked = false;
+
+        if(levelState == LEVEL_ONE_STATE){
+            winMusic.play();
+            displayWinScreen(); 
+        }
+        else{
+            gameWonMusic.play();
+            displayGameWonScreen();
+        }
+
         if (gameArea.keys && gameArea.keys[KEY_ESCAPE])  { //press ESC to return to menu
             gameState = MENU_STATE;
             startGame();
         }
         if(gameArea.keys && gameArea.keys[KEY_ENTER]){
-            //gameState //next level
-            //startGame();
-            gameState = PLAY_STATE;
-            
-        
-            //
-            //LEVEL_ONE.deleteLevel();
             if(levelState == LEVEL_ONE_STATE){
-                for (var i = 0; i < this.map.length; i++) {
-                    map.pop(LEVEL_ONE);
-                }
-                levelState = LEVEL_TWO_STATE;
-                var LEVEL_TWO = new Level(MAP_2);
-
+                gameState = PLAY_STATE;
+                startLevelTwo();
             }
-
-            startLevelTwo();
-            // if(levelState == LEVEL_ONE_STATE){
-            //     
-            
-            // var LEVEL_TWO = new Level(MAP_2);
-            //LEVEL_TWO.draw();
-            //map.push(LEVEL_TWO);
-            //map.pop(LEVEL_ONE);
-            //     gameState == PLAY_STATE;
-            //     startGame();
-            // }
-
         }
 
     }
     else if (gameState == DEAD_STATE){
+
         music.stop();
+        level2Music.stop();
         lossMusic.play();
         displayLossScreen();
         deleteEntities();
         doorUnlocked = false;
         if (gameArea.keys && gameArea.keys[KEY_ESCAPE])  { //press ESC to return to menu
             gameState = MENU_STATE;
+            levelState = LEVEL_ONE_STATE;
+            LEVEL_ONE = new Level(MAP_1);
             startGame();
         }   
     }
@@ -104,33 +99,52 @@ function gameLoopDraw(){
 }
 
 function startGame() {
-    player = new Player(30, 60, "red", playerStartX, playerStartY);
+    for (var i = 0; i < this.map.length; i++) {
+        map.pop(LEVEL_TWO);
+    }
+    for (var i = 0; i < this.map.length; i++) {
+        map.pop(i);
+    }
+    levelState = LEVEL_ONE_STATE;
+    LEVEL_ONE = new Level(MAP_1);
+
+    player = new Player(50, 100, "red", playerStartX, playerStartY);
     viewport.update(playerStartX, playerStartY);
     playerID = player.id;
-    entities.push(new Gate(gateX, gateY-10));
+    entities.push(new Gate(gateX, gateY-70));
     entities.push(new Key(keyStartX, keyStartY+10));
     entities.push(player);
     entities.push(new Brawler("green", 500, 120));
     entities.push(new Jumper("green", 240, 500));
-    entities.push(new Flyer("green", 1340, 240));
+    entities.push(new Flyer("green", 1250, 240));
     entities.push(new HUD(player, CANVAS_WIDTH, 50, 0,0));
     gameArea.start(); 
 }
 
 function startLevelTwo() {
-    player = new Player(30, 60, "red", playerStartX, playerStartY);
+    deleteEntities();
+    for (var i = 0; i < this.map.length; i++) {
+        map.pop(i);
+    }
+    for (var i = 0; i < this.map.length; i++) {
+        map.pop(LEVEL_ONE);
+    }
+    levelState = LEVEL_TWO_STATE;
+    LEVEL_TWO = new Level(MAP_2);
+    player = new Player(50, 100, "blue", playerStartX, playerStartY);
     viewport.update(playerStartX, playerStartY);
     playerID = player.id;
-    entities.push(new Gate(gateX, gateY-10));
+    entities.push(new Gate(gateX, gateY-70));
     entities.push(new Key(keyStartX, keyStartY+10));
     entities.push(player);
-    entities.push(new Brawler("green", 500, 120));
-    entities.push(new Jumper("green", 240, 500));
-    entities.push(new Flyer("green", 1340, 240));
+    entities.push(new Brawler("green", 300, 1000));
+    entities.push(new Brawler("green", 470, 1000));
+    entities.push(new Jumper("green", 300, 1550));
+    entities.push(new Flyer("green", 400, 1975));
+    entities.push(new Flyer("green", 875, 1680));
     entities.push(new HUD(player, CANVAS_WIDTH, 50, 0,0));
     gameArea.start(); 
 }
-
 
 function deleteEntities(){
     entities.each(function(entity) {
@@ -143,7 +157,6 @@ function displayWinScreen(){
     CTX.font = "100px gameFont";
     CTX.fillStyle = "#0000FF";
     CTX.fillText("LEVEL COMPLETE!", 0, CANVAS_HEIGHT/2);
-
     CTX.font = "50px gameFont";
     CTX.fillText("Press ENTER to continue to NEXT LEVEL", 0, .8*CANVAS_HEIGHT);
     CTX.fillText("Press ESC to return to MENU", 0, .9*CANVAS_HEIGHT);
@@ -154,7 +167,11 @@ function displayLossScreen(){
     CTX.font = "100px gameFont";
     CTX.fillStyle = "#0000FF";
     CTX.fillText("GAME OVER!", 0, CANVAS_HEIGHT/2);
-
+    let robotImage = images.get("robot1");
+    CTX.drawImage(robotImage, 900, 100); 
+    CTX.drawImage(robotImage, 675, 100); 
+    let tombstone = images.get("tombstone");
+    CTX.drawImage(tombstone, 750, 200); 
     CTX.font = "50px gameFont";
     CTX.fillText("Press ESC to return to MENU", 0, .9*CANVAS_HEIGHT);
 }
@@ -164,9 +181,21 @@ function displayMenuScreen(){
     CTX.font = "100px gameFont";
     CTX.fillStyle = "#0000FF";
     CTX.fillText("SPACE MISTAKE", 0, CANVAS_HEIGHT/2);
-
+    let manImage = images.get("spaceCaptain");
+    CTX.drawImage(manImage, 900, 50); 
     CTX.font = "50px gameFont";
     CTX.fillText("Press ENTER to Start Game", 0, .9*CANVAS_HEIGHT);
+}
+
+function displayGameWonScreen(){
+    gameArea.clearGray();
+    CTX.font = "100px gameFont";
+    CTX.fillStyle = "#0000FF";
+    CTX.fillText("You Won!", 0, CANVAS_HEIGHT/2);
+    let manImage = images.get("spaceCaptain");
+    CTX.drawImage(manImage, 900, 50); 
+    CTX.font = "50px gameFont";
+    CTX.fillText("Press ESC to Return to Menu", 0, .9*CANVAS_HEIGHT);
 }
 
 function displayIntroText() {

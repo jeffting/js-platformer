@@ -69,6 +69,10 @@ var images = {
     }
 };
 images.load("robot1", "robot1.png");
+images.load("spaceCaptain", "spaceCaptain.png");
+images.load("playerRight", "rollerRight.png");
+images.load("playerLeft", "rollerLeft.png");
+images.load("tombstone", "tombstone.png");
 images.load("brawler", "angry_face.png");
 images.load("key", "key.png");
 images.load("gate", "gate.png");
