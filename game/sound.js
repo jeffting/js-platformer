@@ -17,3 +17,5 @@ function sound(src) {
   var introMusic = new sound("Mysterious-synth-pad-104-bpm.mp3");
   var winMusic = new sound("8-bit-world.mp3");
   var lossMusic = new sound("Maria-theresia-von-paradis-sicilienne.mp3");
+  var gameWonMusic = new sound("Motivational-upbeat-electronic-music-magical-path.mp3");
+  var level2Music = new sound("Relaxing-thinking-time-music.mp3");

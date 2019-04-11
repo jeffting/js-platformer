@@ -57,8 +57,8 @@ class Level {
 		for (var i = 0; i < this.map.length; i++) {
 			map[i].draw();
 		}
-	}
 
+	}
 
 }
 

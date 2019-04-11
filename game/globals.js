@@ -27,6 +27,13 @@ const WIN_STATE = "WIN";
 //start off with the text intro
 var gameState = INTRO_STATE;
 
+//game level constants
+const LEVEL_ONE_STATE = 1;
+const LEVEL_TWO_STATE = 2;
+
+//game level starts at level one.
+var levelState = LEVEL_ONE_STATE;
+
 var doorUnlocked = false;
 
 var canvas = document.getElementById("game-canvas");
@@ -61,6 +68,11 @@ var images = {
         return this.list[name];
     }
 };
+images.load("robot1", "robot1.png");
+images.load("spaceCaptain", "spaceCaptain.png");
+images.load("playerRight", "rollerRight.png");
+images.load("playerLeft", "rollerLeft.png");
+images.load("tombstone", "tombstone.png");
 images.load("brawler", "angry_face.png");
 images.load("key", "key.png");
 images.load("gate", "gate.png");

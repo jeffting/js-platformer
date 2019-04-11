@@ -90,7 +90,7 @@ class Flyer extends CollidableMixIn(
     }
 
     draw() {
-        let image = images.get("brawler");
+        let image = images.get("robot1");
         let viewport = Viewport.getInstance();
         let view_coords = viewport.mapToViewport(this.x, this.y);
         let view_x = view_coords[0];

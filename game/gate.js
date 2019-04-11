@@ -3,7 +3,7 @@ class Gate extends Entity {
     constructor (x, y,) {
         super();
         this.width = 60;
-        this.height = 60;
+        this.height = 120;
         this.x = x;
         this.y = y;
     }
