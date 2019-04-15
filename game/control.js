@@ -74,6 +74,11 @@ function gameLoopDraw(){
         }
         entity.draw();
     });
+
+    for(var s = 0; s < sprites.length; s++){
+        sprites[s].update();
+        sprites[s].draw();
+    }
 }
 
 function startGame() {

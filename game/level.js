@@ -47,8 +47,26 @@ class Level {
                 } else if (row[j] == 4) {
                     gateX = j * BLOCK_SIZE;
                     gateY = i * BLOCK_SIZE;
-                }
+				} else if(row[j] == 5) {
+					let spriteX = j * BLOCK_SIZE;
+					let spriteY = i * BLOCK_SIZE;
+
+					let flames = sprite({
+						context: CTX,
+						width: 150,
+						height: 150,
+						image: images.get("flames"),
+						frames: 3,
+						drawX: spriteX,
+						drawY: spriteY
+					})
+
+					sprites.push(flames);
+					
+				}
+				
 			}
+			console.log(sprites);
 
 		}
 	}
